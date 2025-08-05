@@ -1,0 +1,9 @@
+Base + 3 variações do personagem - Equipamento ou Membro do corpo
+	Todas as variações DEVEM estar no mesmo mapa UV - Recomendado 2k de resolução
+	
+Máximo de 250mb do arquivo .blend 
+Máximo de 50k tris entre o modelo e as variações após a retopologia
+
+
+
+Cortar o bambu dourado
