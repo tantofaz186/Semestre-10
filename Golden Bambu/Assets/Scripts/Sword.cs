@@ -24,7 +24,6 @@ public class Sword : MonoBehaviour
         control.Enable();
         touchAction = control.Player.Touch;
         touchAction.Enable();
-        touchAction.performed += OnTouchActionChanged;
         touchAction.started += OnTouchActionStarted;
         touchAction.canceled += OnTouchActionCanceled;
         moveAction = control.Player.Move;
@@ -34,32 +33,23 @@ public class Sword : MonoBehaviour
     Vector3 swipeStartPosition;
     private void OnTouchActionCanceled(InputAction.CallbackContext obj)
     {
-        Debug.Log($"Position action canceled at {moveAction.ReadValue<Vector2>()}");
-        Vector3 swipeEndPosition = moveAction.ReadValue<Vector2>();
-        swipeEndPosition.z = -1 * mainCamera.transform.position.z;
-        swipeEndPosition = mainCamera.ScreenToWorldPoint(swipeEndPosition);
-
+        Vector3 swipeEndPosition = TreatPosition(moveAction.ReadValue<Vector2>());
         OnSwipeEnd?.Invoke(swipeStartPosition, swipeEndPosition);
     }
 
     private void OnTouchActionStarted(InputAction.CallbackContext obj)
     {
-        Debug.Log($"Position action Started at {moveAction.ReadValue<Vector2>()}");
-        swipeStartPosition = moveAction.ReadValue<Vector2>();
-        swipeStartPosition.z = -1 * mainCamera.transform.position.z;
-        swipeStartPosition = mainCamera.ScreenToWorldPoint(swipeStartPosition);
+        swipeStartPosition = TreatPosition(moveAction.ReadValue<Vector2>());
     }
 
-    private void OnTouchActionChanged(InputAction.CallbackContext obj)
+    private Vector3 TreatPosition(Vector2 untreatedPosition)
     {
-        // Vector3 pos = moveAction.ReadValue<Vector2>();
-        // pos.z = -1 * mainCamera.transform.position.z;
-        // transform.position = mainCamera.ScreenToWorldPoint(pos);
+        Vector3 treatedPosition = untreatedPosition;
+        treatedPosition.z = -1 * mainCamera.transform.position.z;
+        return mainCamera.ScreenToWorldPoint(treatedPosition);
     }
-
     private void OnDisable()
     {
-        touchAction.performed -= OnTouchActionChanged;
         touchAction.started -= OnTouchActionStarted;
         touchAction.canceled -= OnTouchActionCanceled;
         touchAction.Disable();
