@@ -22,7 +22,7 @@ public class CuttableObject : MonoBehaviour
         {
             if (weakPointPair.TouchedPair(start, end))
             {
-                weakPointPair.cut = true;
+                weakPointPair.Cut();
             }
         }
 
@@ -38,7 +38,7 @@ public class WeakPointPair
 {
     public WeakPoint first;
     public WeakPoint last;
-    public bool cut;
+    public bool cut { get; private set; }
     public bool TouchedPair(Vector3 start, Vector3 end)
     {
         Vector3 origin = start;
@@ -47,9 +47,23 @@ public class WeakPointPair
         origin.z = first.transform.position.z;
         direction.z = last.transform.position.z;
         
-        direction -= origin; // Calculate the direction vector
+        direction -= origin;
         Ray ray = new Ray(origin, direction);
         return first.Contains(ray, direction.magnitude) && last.Contains(ray, direction.magnitude);
 
+    }
+
+    public void Cut()
+    {
+        first.gameObject.SetActive(false);
+        last.gameObject.SetActive(false);
+        cut = true;
+    }
+
+    public void Reset()
+    {
+        first.gameObject.SetActive(true);
+        last.gameObject.SetActive(true);
+        cut = false;
     }
 }
