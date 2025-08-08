@@ -49,7 +49,7 @@ public class WeakPointPair
         
         direction -= origin; // Calculate the direction vector
         Ray ray = new Ray(origin, direction);
-        return first.Contains(ray) && last.Contains(ray);
+        return first.Contains(ray, direction.magnitude) && last.Contains(ray, direction.magnitude);
 
     }
 }
