@@ -9,6 +9,7 @@ public class Sword : MonoBehaviour
     private InputAction touchAction, moveAction;
     private SwordControl control;
     Camera mainCamera;
+    LineRenderer lineRenderer;
     public delegate void Swipe(Vector3 start, Vector3 end);
     public event Swipe OnSwipeEnd;
     private void Awake()
@@ -28,7 +29,7 @@ public class Sword : MonoBehaviour
         touchAction.canceled += OnTouchActionCanceled;
         moveAction = control.Player.Move;
         moveAction.Enable();
-        
+        lineRenderer = GetComponent<LineRenderer>();
     }
     Vector3 swipeStartPosition;
     private void OnTouchActionCanceled(InputAction.CallbackContext obj)
@@ -42,6 +43,13 @@ public class Sword : MonoBehaviour
         swipeStartPosition = TreatPosition(moveAction.ReadValue<Vector2>());
     }
 
+    public void SetLine(Ray ray, float magnitude)
+    {
+        lineRenderer.SetPositions(new []{
+            ray.origin, ray.origin + ray.direction * magnitude
+
+        });
+    }
     private Vector3 TreatPosition(Vector2 untreatedPosition)
     {
         Vector3 treatedPosition = untreatedPosition;

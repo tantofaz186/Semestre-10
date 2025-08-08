@@ -18,7 +18,7 @@ public class CuttableObject : MonoBehaviour
 
     private void OnSwipeEnd(Vector3 start, Vector3 end)
     {
-        foreach (WeakPointPair weakPointPair in weakPoints)
+        foreach (WeakPointPair weakPointPair in weakPoints.Where((w) => !w.cut))
         {
             if (weakPointPair.TouchedPair(start, end))
             {
@@ -49,6 +49,7 @@ public class WeakPointPair
         
         direction -= origin;
         Ray ray = new Ray(origin, direction);
+        Sword.Instance.SetLine(ray, direction.magnitude);
         return first.Contains(ray, direction.magnitude) && last.Contains(ray, direction.magnitude);
 
     }
