@@ -11,14 +11,14 @@ public class WeakPoint : MonoBehaviour
     {
         col = GetComponent<Collider>();
     }
-
+    public bool Intersects(Bounds bounds)
+    {
+        return col.bounds.Intersects(bounds);
+    }
     public bool Contains(Ray cut, float rayLength)
     {
-        Debug.Log(
-            $"Checking if {name} contains cut ray from {cut.origin} to {cut.direction} - {GetComponent<Collider>().bounds.IntersectRay(cut)}");
-        bool r = GetComponent<Collider>().bounds.IntersectRay(cut, out float hitLenght)
+        bool r = col.bounds.IntersectRay(cut, out float hitLenght)
                && hitLenght <= rayLength;
-        Debug.Log($"{hitLenght} ---- {rayLength}");
         return r;
     }
 }

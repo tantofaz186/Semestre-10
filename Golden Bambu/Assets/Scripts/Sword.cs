@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +11,7 @@ public class Sword : MonoBehaviour
     private InputAction touchAction, moveAction;
     private SwordControl control;
     Camera mainCamera;
-    LineRenderer lineRenderer;
+    public LineRenderer lineRenderer;
     public delegate void Swipe(Vector3 start, Vector3 end);
     public event Swipe OnSwipeEnd;
     private void Awake()
@@ -40,6 +42,7 @@ public class Sword : MonoBehaviour
 
     private void OnTouchActionStarted(InputAction.CallbackContext obj)
     {
+
         swipeStartPosition = TreatPosition(moveAction.ReadValue<Vector2>());
     }
 
@@ -50,6 +53,7 @@ public class Sword : MonoBehaviour
 
         });
     }
+
     private Vector3 TreatPosition(Vector2 untreatedPosition)
     {
         Vector3 treatedPosition = untreatedPosition;
