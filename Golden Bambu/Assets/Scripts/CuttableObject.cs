@@ -2,17 +2,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class CuttableObject : MonoBehaviour
 {
     public List<WeakPointPair> weakPoints;
     private IEnumerable<WeakPointPair> UncutWeakPoints => weakPoints.Where((w) => !w.cut);
+    public Rigidbody rb {get;private set;}
 
+    private void Awake() {
+        rb = GetComponent<Rigidbody>();
+    }
     private void Start()
     {
         Sword.Instance.OnSwipeEnd += OnSwipeEnd;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         Sword.Instance.OnSwipeEnd -= OnSwipeEnd;
     }
@@ -32,6 +37,10 @@ public class CuttableObject : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    public void Reset() {
+        weakPoints.ForEach(x => x.Reset());
+        gameObject.SetActive(true);
     }
 }
 
