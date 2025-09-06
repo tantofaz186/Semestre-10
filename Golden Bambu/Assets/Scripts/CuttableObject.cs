@@ -61,17 +61,12 @@ public class WeakPointPair
 
         direction -= origin;
         Ray ray = new Ray(origin, direction);
+        Sword.Instance.SetLine(ray, direction.magnitude);
 
         // return first.Intersects(Sword.Instance.lineRenderer.bounds) 
         //        && last.Intersects(Sword.Instance.lineRenderer.bounds);
         bool r = first.Contains(ray, direction.magnitude)
                && last.Contains(ray, direction.magnitude);
-        if (r)
-        {
-            Ray lineRay = new Ray(start, end - start);
-            Sword.Instance.SetLine(ray, direction.magnitude);
-        }
-
         return r;
     }
 
