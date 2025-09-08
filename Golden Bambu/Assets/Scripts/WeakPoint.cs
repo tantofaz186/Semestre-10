@@ -17,8 +17,14 @@ public class WeakPoint : MonoBehaviour
     }
     public bool Contains(Ray cut, float rayLength)
     {
+
         bool r = col.bounds.IntersectRay(cut, out float hitLenght)
                && hitLenght <= rayLength;
         return r;
+    }
+    public bool Contains(Plane plane)
+    {
+
+        return col.bounds.Contains(plane.ClosestPointOnPlane(col.bounds.center));
     }
 }
