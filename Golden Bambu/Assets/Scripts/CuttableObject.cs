@@ -26,7 +26,7 @@ public class CuttableObject : MonoBehaviour
     {
         foreach (WeakPointPair weakPointPair in UncutWeakPoints)
         {
-            if (weakPointPair.TouchedPair(start, end))
+            if (weakPointPair.TouchedPair(start, end, Sword.Instance.GetCameraPosition()))
             {
                 weakPointPair.Cut();
                 break;
@@ -50,24 +50,15 @@ public class WeakPointPair
     public WeakPoint first;
     public WeakPoint last;
     public bool cut { get; private set; }
-
-    public bool TouchedPair(Vector3 start, Vector3 end)
+    private Plane plane = new Plane();
+    public bool TouchedPair(Vector3 start, Vector3 end, Vector3 mainCameraPosition)
     {
         Vector3 origin = start;
-        Vector3 direction = end;
-
-        origin.z = first.transform.position.z;
-        direction.z = last.transform.position.z;
-
-        direction -= origin;
+        Vector3 direction = end - origin;
         Ray ray = new Ray(origin, direction);
         Sword.Instance.SetLine(ray, direction.magnitude);
-
-        // return first.Intersects(Sword.Instance.lineRenderer.bounds) 
-        //        && last.Intersects(Sword.Instance.lineRenderer.bounds);
-        bool r = first.Contains(ray, direction.magnitude)
-               && last.Contains(ray, direction.magnitude);
-        return r;
+        plane.Set3Points(origin, end, mainCameraPosition);
+        return first.Contains(plane) && last.Contains(plane);
     }
 
     public void SetSwordLine(Ray ray)
