@@ -7,6 +7,8 @@ public class Sword : MonoBehaviour
     private static Sword instance;
     public static Sword Instance => instance;
 
+    [SerializeField]
+    private float deadzone = 0.25f;
     private InputAction touchAction, moveAction;
     private SwordControl control;
     Camera mainCamera;
@@ -43,7 +45,8 @@ public class Sword : MonoBehaviour
     private void OnTouchActionCanceled(InputAction.CallbackContext obj)
     {
         Vector3 swipeEndPosition = TreatPosition(moveAction.ReadValue<Vector2>());
-        OnSwipeEnd?.Invoke(swipeStartPosition, swipeEndPosition);
+        if(deadzone < Vector3.Distance(transform.position, swipeEndPosition))
+            OnSwipeEnd?.Invoke(swipeStartPosition, swipeEndPosition);
     }
 
     private void OnTouchActionStarted(InputAction.CallbackContext obj)

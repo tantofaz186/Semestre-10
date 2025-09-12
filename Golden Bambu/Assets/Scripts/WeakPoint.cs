@@ -24,7 +24,6 @@ public class WeakPoint : MonoBehaviour
     }
     public bool Contains(Plane plane)
     {
-
         return col.bounds.Contains(plane.ClosestPointOnPlane(col.bounds.center));
     }
 }
