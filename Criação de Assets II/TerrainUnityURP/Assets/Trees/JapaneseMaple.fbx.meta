@@ -28,7 +28,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: JapaneseTreeBark.001
-    second: {fileID: 2100000, guid: ed93f43e5563a66cba077a9ae17dbef2, type: 2}
+    second: {fileID: 2100000, guid: 5840182df539731e1a7f0cba25e236b8, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
