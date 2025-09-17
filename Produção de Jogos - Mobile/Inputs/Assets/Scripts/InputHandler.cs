@@ -29,6 +29,21 @@ public class InputHandler : MonoBehaviour
     private const int MAX_TAP_COUNT = 3;
     private bool handlingTaps = false;
 
+    private static InputHandler instance;
+    public static InputHandler Instance => instance;
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Update()
     {
         if (Input.touchCount > 0)
