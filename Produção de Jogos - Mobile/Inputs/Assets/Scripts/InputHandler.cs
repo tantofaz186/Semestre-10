@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class InputHandler : MonoBehaviour
@@ -22,9 +23,11 @@ public class InputHandler : MonoBehaviour
 
     [SerializeField]
     private float swipeMinimalDistance = 0.25f;
-
     private Vector2 touchBeginPosition;
     private float touchEndTime;
+    private int tapCount = 0;
+    private const int MAX_TAP_COUNT = 3;
+    private bool handlingTaps = false;
 
     private void Update()
     {
@@ -55,7 +58,31 @@ public class InputHandler : MonoBehaviour
         else
         {
             touchEndTime = Time.time;
+            StartCoroutine(HandleTaps());
         }
+    }
+    private IEnumerator HandleTaps()
+    {
+        tapCount++;
+        if(handlingTaps)
+            yield break;
+        handlingTaps = true;
+        //Sim, Diegão, se fizer assim, o touchEndTime muda quando vc der outro TouchEnd então é escalável (insano, descobri testando hooooly...)
+        yield return new WaitUntil(() => tapCount >= MAX_TAP_COUNT || Time.time - touchEndTime >= tapDelayThreshold);
+        switch (tapCount)
+        {
+            case 1:
+                onSingleTap?.Invoke();
+                break;
+            case 2:
+                onDoubleTap?.Invoke();
+                break;
+            case >= MAX_TAP_COUNT:
+                onTripleTap?.Invoke();
+                break;
+        }
+        tapCount = 0;
+        handlingTaps = false;
     }
 
     private void HandleSwipe(Vector2 startPosition, Vector2 endPosition)
