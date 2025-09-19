@@ -42,8 +42,13 @@ public class InputHandler : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        InvokeRepeating(nameof(GetTilt), 0, 2);
     }
 
+    public void GetTilt()
+    {
+        Debug.Log(Input.acceleration);
+    }
     private void Update()
     {
         if (Input.touchCount > 0)

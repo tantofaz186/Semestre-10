@@ -28,6 +28,5 @@ namespace DefaultNamespace
             InputHandler.Instance.onSwipe -= SwipeAction;
             InputHandler.Instance.onTilt -= TiltAction;
         }
-        }
     }
 }
