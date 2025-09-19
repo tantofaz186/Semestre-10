@@ -12,7 +12,12 @@ namespace DefaultNamespace
             InputHandler.Instance.onTilt += TiltAction;
         }
 
-        private void SwipeAction(InputHandler.Direction obj)
+        private void SwipeAction(InputHandler.Direction dir)
+        {
+            DoAFlip(dir);
+        }
+
+        private void DoAFlip(InputHandler.Direction dir)
         {
             throw new NotImplementedException();
         }
