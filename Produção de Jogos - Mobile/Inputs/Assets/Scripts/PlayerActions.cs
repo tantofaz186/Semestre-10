@@ -21,11 +21,12 @@ namespace DefaultNamespace
 
         private void DoubleTapAction()
         {
-            throw new NotImplementedException();
+            Kick();
         }
+
         private void TripleTapAction()
         {
-            throw new NotImplementedException();
+            Punch();
         }
 
         protected virtual void OnDisable()
@@ -36,5 +37,13 @@ namespace DefaultNamespace
         }
 
 
+        private void Kick()
+        {
+            throw new NotImplementedException();
+        }
+        private void Punch()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

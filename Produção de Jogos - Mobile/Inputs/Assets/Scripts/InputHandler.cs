@@ -23,6 +23,7 @@ public class InputHandler : MonoBehaviour
 
     [SerializeField]
     private float swipeMinimalDistance = 0.25f;
+
     private Vector2 touchBeginPosition;
     private float touchEndTime;
     private int tapCount = 0;
@@ -31,9 +32,12 @@ public class InputHandler : MonoBehaviour
 
     private static InputHandler instance;
     public static InputHandler Instance => instance;
+
+    #region unity functions
+
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -42,6 +46,13 @@ public class InputHandler : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        InvokeRepeating(nameof(GetTilt), 0, 2);
+    }
+
+    private void Start()
+    {
+        CalibrateTilt();
     }
 
     private void Update()
@@ -61,6 +72,10 @@ public class InputHandler : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region touch
+
     private void HandleTouchBegin(Touch touch)
     {
         touchBeginPosition = touch.position;
@@ -76,11 +91,11 @@ public class InputHandler : MonoBehaviour
             StartCoroutine(HandleTaps());
         }
     }
+
     private IEnumerator HandleTaps()
     {
         tapCount++;
-        if(handlingTaps)
-            yield break;
+        if (handlingTaps) yield break;
         handlingTaps = true;
         //Sim, Diegão, se fizer assim, o touchEndTime muda quando vc der outro TouchEnd então é escalável (insano, descobri testando hooooly...)
         yield return new WaitUntil(() => tapCount >= MAX_TAP_COUNT || Time.time - touchEndTime >= tapDelayThreshold);
@@ -96,9 +111,14 @@ public class InputHandler : MonoBehaviour
                 onTripleTap?.Invoke();
                 break;
         }
+
         tapCount = 0;
         handlingTaps = false;
     }
+
+    #endregion
+
+    #region swipe
 
     private void HandleSwipe(Vector2 startPosition, Vector2 endPosition)
     {
@@ -121,4 +141,20 @@ public class InputHandler : MonoBehaviour
 
         return swipeDirection;
     }
+
+    #endregion
+
+    #region tilt
+
+    private void CalibrateTilt()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void GetTilt()
+    {
+        Debug.Log(Input.acceleration);
+    }
+
+    #endregion
 }
