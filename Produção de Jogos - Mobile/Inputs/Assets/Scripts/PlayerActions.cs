@@ -6,12 +6,21 @@ namespace DefaultNamespace
 {
     public class PlayerActions : MonoBehaviour
     {
+        [SerializeField] protected float speed = 15f;
+
+        protected const float GRAVITY_ACCELERATION = 9.8f;
+        protected CharacterController controller;
+
+        private void Awake()
+        {
+            controller = GetComponent<CharacterController>();
+        }
+
         protected virtual void Start()
         {
             InputHandler.Instance.onSingleTap += SingleTapAction;
             InputHandler.Instance.onDoubleTap += DoubleTapAction;
             InputHandler.Instance.onTripleTap += TripleTapAction;
-
         }
 
         private void SingleTapAction()
@@ -36,11 +45,11 @@ namespace DefaultNamespace
             InputHandler.Instance.onTripleTap -= TripleTapAction;
         }
 
-
         private void Kick()
         {
             throw new NotImplementedException();
         }
+
         private void Punch()
         {
             throw new NotImplementedException();

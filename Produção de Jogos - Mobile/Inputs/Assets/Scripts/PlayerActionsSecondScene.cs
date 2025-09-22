@@ -22,9 +22,10 @@ namespace DefaultNamespace
             throw new NotImplementedException();
         }
 
-        private void TiltAction(Vector2 obj)
+        private void TiltAction(Vector3 obj)
         {
-            throw new NotImplementedException();
+            Vector3 movement = new Vector3(obj.x * speed, obj.z * GRAVITY_ACCELERATION, 0) * Time.deltaTime;
+            controller.Move(movement);
         }
 
         protected override void OnDisable()

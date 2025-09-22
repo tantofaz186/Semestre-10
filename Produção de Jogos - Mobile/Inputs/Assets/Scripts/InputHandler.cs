@@ -16,7 +16,7 @@ public class InputHandler : MonoBehaviour
     public event Action onDoubleTap;
     public event Action onTripleTap;
     public event Action<Direction> onSwipe;
-    public event Action<Vector2> onTilt;
+    public event Action<Vector3> onTilt;
 
     [SerializeField]
     private float tapDelayThreshold = 0.4f;
@@ -46,13 +46,6 @@ public class InputHandler : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        InvokeRepeating(nameof(GetTilt), 0, 2);
-    }
-
-    private void Start()
-    {
-        CalibrateTilt();
     }
 
     private void Update()
@@ -70,6 +63,7 @@ public class InputHandler : MonoBehaviour
                     break;
             }
         }
+        GetTilt();
     }
 
     #endregion
@@ -146,14 +140,9 @@ public class InputHandler : MonoBehaviour
 
     #region tilt
 
-    private void CalibrateTilt()
+    private void GetTilt()
     {
-        throw new NotImplementedException();
-    }
-
-    public void GetTilt()
-    {
-        Debug.Log(Input.acceleration);
+        onTilt?.Invoke(Input.acceleration);
     }
 
     #endregion
