@@ -50,6 +50,12 @@ public class InputHandler : MonoBehaviour
 
     private void Update()
     {
+        HandleTouch();
+        GetTilt();
+    }
+
+    private void HandleTouch()
+    {
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -63,7 +69,6 @@ public class InputHandler : MonoBehaviour
                     break;
             }
         }
-        GetTilt();
     }
 
     #endregion

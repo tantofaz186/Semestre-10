@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +10,9 @@ namespace DefaultNamespace
         protected const float GRAVITY_ACCELERATION = 9.8f;
         protected CharacterController controller;
 
+        [SerializeField] protected Animator animator;
+        private static readonly int punch = Animator.StringToHash("punch");
+        private static readonly int kick = Animator.StringToHash("kick");
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
@@ -45,14 +47,14 @@ namespace DefaultNamespace
             InputHandler.Instance.onTripleTap -= TripleTapAction;
         }
 
-        private void Kick()
-        {
-            throw new NotImplementedException();
-        }
-
         private void Punch()
         {
-            throw new NotImplementedException();
+            animator.SetTrigger(punch);
+        }
+
+        private void Kick()
+        {
+            animator.SetTrigger(kick);
         }
     }
 }
