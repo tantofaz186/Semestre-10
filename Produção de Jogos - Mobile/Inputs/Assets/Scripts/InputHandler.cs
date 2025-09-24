@@ -19,10 +19,10 @@ public class InputHandler : MonoBehaviour
     public event Action<Vector3> onTilt;
 
     [SerializeField]
-    private float tapDelayThreshold = 0.4f;
+    private float tapDelayThreshold = 0.8f;
 
     [SerializeField]
-    private float swipeMinimalDistance = 0.25f;
+    private float swipeMinimalDistance = 75f;
 
     private Vector2 touchBeginPosition;
     private float touchEndTime;

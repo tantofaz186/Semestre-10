@@ -658,6 +658,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127296d5d31942718d6af48548b415e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 15
+  animator: {fileID: 0}
 --- !u!1 &1684859206
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,8 +689,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2519f4b84816d0c8cd31105b2a710b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tapDelayThreshold: 0.4
-  swipeMinimalDistance: 0.25
+  tapDelayThreshold: 0.8
+  swipeMinimalDistance: 75
 --- !u!4 &1684859208
 Transform:
   m_ObjectHideFlags: 0
