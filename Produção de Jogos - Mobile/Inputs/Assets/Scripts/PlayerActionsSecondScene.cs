@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -20,48 +21,48 @@ namespace DefaultNamespace
         {
             DoAFlip(dir);
         }
-
+        bool isFlipping = false;
         private void DoAFlip(InputHandler.Direction dir)
         {
+            if (isFlipping) return;
+            StartCoroutine(Flip(dir));
+
+        }
+
+        public IEnumerator Flip(InputHandler.Direction dir)
+        {
+            isFlipping = true;
+            Vector3 pivot = controller.bounds.min;
+            Vector3 axis;
             switch (dir)
             {
                 case InputHandler.Direction.UP:
-                    FrontFlip();
+                    axis = -transform.right;
                     break;
                 case InputHandler.Direction.DOWN:
-                    BackFlip();
+                    axis = transform.right;
                     break;
                 case InputHandler.Direction.LEFT:
-                    SideFlipLeft();
+                    axis = transform.forward;
                     break;
                 case InputHandler.Direction.RIGHT:
-                    SideFlipRight();
+                    axis = -transform.forward;
                     break;
                 default:
+                    axis = Vector3.zero;
                     break;
             }
+            Debug.Log(dir);
+            yield return new WaitForSeconds(0.2f);
+            controller.transform.RotateAround(pivot, axis, 90f);
+            yield return new WaitForSeconds(0.2f);
+            controller.transform.RotateAround(pivot, axis, 90f);
+            yield return new WaitForSeconds(0.2f);
+            controller.transform.RotateAround(pivot, axis, 90f);
+            yield return new WaitForSeconds(0.2f);
+            controller.transform.RotateAround(pivot, axis, 90f);
+            isFlipping = false;
         }
-
-        private void FrontFlip()
-        {
-            animator.SetTrigger(frontFlip);
-        }   
-
-        private void BackFlip()
-        {
-            animator.SetTrigger(backFlip);
-        }
-
-        private void SideFlipLeft()
-        {
-            animator.SetTrigger(leftFlip);
-        }
-
-        private void SideFlipRight()
-        {
-            animator.SetTrigger(rightFlip);
-        }
-
         private void TiltAction(Vector3 obj)
         {
             Vector3 movement = new Vector3(obj.x * speed, obj.z * GRAVITY_ACCELERATION, 0) * Time.deltaTime;

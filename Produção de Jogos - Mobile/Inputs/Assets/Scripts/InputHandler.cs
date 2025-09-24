@@ -129,7 +129,7 @@ public class InputHandler : MonoBehaviour
     {
         Vector2 resultVector = endPosition - startPosition;
         Direction swipeDirection;
-        if (resultVector.y > resultVector.x)
+        if (resultVector.y * resultVector.y > resultVector.x * resultVector.x)
         {
             swipeDirection = resultVector.y >= 0 ? Direction.UP : Direction.DOWN;
         }
