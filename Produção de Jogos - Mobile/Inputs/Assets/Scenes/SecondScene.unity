@@ -738,7 +738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2519f4b84816d0c8cd31105b2a710b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tapDelayThreshold: 0.8
+  tapDelayThreshold: 0.4
   swipeMinimalDistance: 75
 --- !u!4 &1684859208
 Transform:
