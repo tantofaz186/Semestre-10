@@ -5,10 +5,9 @@ namespace DefaultNamespace
 {
     public class PlayerActionsSecondScene : PlayerActions
     {
-        private static readonly int frontFlip = Animator.StringToHash("frontFlip");
-        private static readonly int backFlip = Animator.StringToHash("backFlip");
-        private static readonly int leftFlip = Animator.StringToHash("leftFlip");
-        private static readonly int rightFlip = Animator.StringToHash("rightFlip");
+        const int FULL_ROTATION = 360;
+
+        #region unity functions
 
         protected override void Start()
         {
@@ -17,21 +16,36 @@ namespace DefaultNamespace
             InputHandler.Instance.onTilt += TiltAction;
         }
 
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            InputHandler.Instance.onSwipe -= SwipeAction;
+            InputHandler.Instance.onTilt -= TiltAction;
+        }
+
+        #endregion
+
+        #region actions
+
         private void SwipeAction(InputHandler.Direction dir)
         {
-            DoAFlip(dir);
-        }
-        bool isFlipping = false;
-        private void DoAFlip(InputHandler.Direction dir)
-        {
-            if (isFlipping) return;
+            if (isActing) return;
             StartCoroutine(Flip(dir));
-
         }
+
+        private void TiltAction(Vector3 obj)
+        {
+            if (isActing) return;
+            Move(obj);
+        }
+
+        #endregion
+
+        #region flip
 
         public IEnumerator Flip(InputHandler.Direction dir)
         {
-            isFlipping = true;
+            isActing = true;
             Vector3 pivot = controller.bounds.min;
             Vector3 axis;
             switch (dir)
@@ -52,28 +66,35 @@ namespace DefaultNamespace
                     axis = Vector3.zero;
                     break;
             }
-            Debug.Log(dir);
-            yield return new WaitForSeconds(0.2f);
-            controller.transform.RotateAround(pivot, axis, 90f);
-            yield return new WaitForSeconds(0.2f);
-            controller.transform.RotateAround(pivot, axis, 90f);
-            yield return new WaitForSeconds(0.2f);
-            controller.transform.RotateAround(pivot, axis, 90f);
-            yield return new WaitForSeconds(0.2f);
-            controller.transform.RotateAround(pivot, axis, 90f);
-            isFlipping = false;
+
+            float totalRotation = 0f;
+            while (totalRotation < 360)
+            {
+                float frameRotation = Time.deltaTime * FULL_ROTATION;
+                totalRotation += frameRotation;
+                if (totalRotation > FULL_ROTATION)
+                {
+                    frameRotation = frameRotation - (totalRotation - FULL_ROTATION);
+                    totalRotation = FULL_ROTATION;
+                }
+
+                controller.transform.RotateAround(pivot, axis, frameRotation);
+                yield return null;
+            }
+
+            isActing = false;
         }
-        private void TiltAction(Vector3 obj)
+
+        #endregion
+
+        #region move
+
+        private void Move(Vector3 obj)
         {
             Vector3 movement = new Vector3(obj.x * speed, obj.z * GRAVITY_ACCELERATION, 0) * Time.deltaTime;
             controller.Move(movement);
         }
 
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-            InputHandler.Instance.onSwipe -= SwipeAction;
-            InputHandler.Instance.onTilt -= TiltAction;
-        }
+        #endregion
     }
 }
