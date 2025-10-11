@@ -27,13 +27,24 @@ public class Cannon : MonoBehaviour
     {
         var nextObject = spawnedObjects[next];
         nextObject.transform.position = shootPoint.position;
-        nextObject.rb.Sleep();
+        nextObject.Reset();
 
+
+        nextObject.rb.Sleep();
         nextObject.rb.AddForce(force, ForceMode.Impulse);
 
 
         next++;
         next = next % spawnedObjects.Count;
+    }
+
+    bool isSpawning = false;
+
+    public void SpawnNextPerSecond()
+    {
+        if (isSpawning) return;
+        isSpawning = true;
+        InvokeRepeating(nameof(SpawnNext), 0, 1f);
     }
 
     [CustomEditor(typeof(Cannon))]
@@ -46,6 +57,12 @@ public class Cannon : MonoBehaviour
             {
                 var t = target as Cannon;
                 t.SpawnNext();
+            }
+
+            if (GUILayout.Button("Spawn With time"))
+            {
+                var t = target as Cannon;
+                t.SpawnNextPerSecond();
             }
         }
     }

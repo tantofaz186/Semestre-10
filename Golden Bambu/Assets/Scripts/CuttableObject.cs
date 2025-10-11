@@ -1,6 +1,8 @@
+using System;
 using EzySlice;
 using UnityEngine;
 using Plane = UnityEngine.Plane;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CuttableObject : MonoBehaviour
@@ -18,6 +20,18 @@ public class CuttableObject : MonoBehaviour
         Sword.Instance.OnCut += OnCut;
     }
 
+    public void Reset()
+    {
+        gameObject.SetActive(true);
+        Sword.Instance.OnCut += OnCut;
+    }
+    
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+        Sword.Instance.OnCut -= OnCut;
+    }
+    
     private void OnDisable()
     {
         Sword.Instance.OnCut -= OnCut;
@@ -43,7 +57,7 @@ public class CuttableObject : MonoBehaviour
         }
 
         Debug.Log(points);
-        gameObject.SetActive(false);
+        Deactivate();
     }
 
     private static uint points = 0;
