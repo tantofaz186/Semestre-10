@@ -50,7 +50,6 @@ public class Sword : MonoBehaviour
     {
         Vector3 swipeEndPosition = TreatPosition(moveAction.ReadValue<Vector2>());
         float distance = Vector3.Distance(swipeStartPosition, swipeEndPosition);
-        Debug.Log(distance + " " + deadzone);
         if (deadzone < distance)
         {
             Vector3 mainCameraPosition = mainCamera.transform.position;
