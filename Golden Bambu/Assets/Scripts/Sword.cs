@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 using TouchPhase = UnityEngine.TouchPhase;
 
 public class Sword : MonoBehaviour
@@ -7,17 +8,20 @@ public class Sword : MonoBehaviour
     private static Sword instance;
     public static Sword Instance => instance;
 
-    [SerializeField]
-    private float deadzone = 0.25f;
+    [SerializeField] private const float deadzone = 4.25f;
     private InputAction touchAction, moveAction;
     private SwordControl control;
     Camera mainCamera;
     public LineRenderer lineRenderer;
+    [SerializeField] VisualEffect swordTrailVFX;
 
     public delegate void Swipe(Vector3 start, Vector3 end);
 
+    public delegate void SwipePlane(Plane plane);
+
     public event Swipe OnSwipeEnd;
-    private readonly Plane plane = new Plane(-Vector3.forward, Vector3.zero);
+    public event SwipePlane OnCut;
+    Plane cuttingPlane;
 
     private void Awake()
     {
@@ -45,35 +49,36 @@ public class Sword : MonoBehaviour
     private void OnTouchActionCanceled(InputAction.CallbackContext obj)
     {
         Vector3 swipeEndPosition = TreatPosition(moveAction.ReadValue<Vector2>());
-        if(deadzone < Vector3.Distance(transform.position, swipeEndPosition))
+        float distance = Vector3.Distance(swipeStartPosition, swipeEndPosition);
+        Debug.Log(distance + " " + deadzone);
+        if (deadzone < distance)
+        {
+            Vector3 mainCameraPosition = mainCamera.transform.position;
+
             OnSwipeEnd?.Invoke(swipeStartPosition, swipeEndPosition);
+            cuttingPlane.Set3Points(
+                swipeStartPosition,
+                swipeEndPosition,
+                mainCameraPosition);
+            SetupVfx(swipeEndPosition, mainCameraPosition, cuttingPlane.normal);
+            OnCut?.Invoke(cuttingPlane);
+        }
+    }
+
+    private void SetupVfx(Vector3 swipeEndPosition, Vector3 mainCameraPosition, Vector3 planeNormal)
+    {
+        Vector3 midPoint = (swipeEndPosition + swipeStartPosition) / 2;
+        swordTrailVFX.transform.position = new(midPoint.x, mainCameraPosition.y,
+            mainCameraPosition.z);
+        swordTrailVFX.transform.LookAt(midPoint, planeNormal);
+        swordTrailVFX.Play();
     }
 
     private void OnTouchActionStarted(InputAction.CallbackContext obj)
     {
         swipeStartPosition = TreatPosition(moveAction.ReadValue<Vector2>());
     }
-
-    public void SetLine(Ray ray, float magnitude)
-    {
-        lineRenderer.SetPositions(new[]
-        {
-            ray.origin, ray.origin + ray.direction * magnitude
-        });
-    }
-
-    public void SetLine(Vector3 a, Vector3 b)
-    {
-        lineRenderer.SetPositions(new[]
-        {
-            a, b
-        });
-    }
-
-    public Vector3 GetCameraPosition()
-    {
-        return mainCamera.transform.position;
-    }
+    
     private Vector3 TreatPosition(Vector2 untreatedPosition)
     {
         Vector3 treatedPosition = untreatedPosition;

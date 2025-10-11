@@ -1,82 +1,63 @@
-using System.Collections.Generic;
-using System.Linq;
+using EzySlice;
 using UnityEngine;
+using Plane = UnityEngine.Plane;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CuttableObject : MonoBehaviour
 {
-    public List<WeakPointPair> weakPoints;
-    private IEnumerable<WeakPointPair> UncutWeakPoints => weakPoints.Where((w) => !w.cut);
-    public Rigidbody rb {get;private set;}
-
-    private void Awake() {
+    public Rigidbody rb { get; private set; }
+    private Material mat;
+    private void Awake()
+    {
         rb = GetComponent<Rigidbody>();
+        mat = GetComponent<MeshRenderer>().sharedMaterial;
     }
+
     private void Start()
     {
-        Sword.Instance.OnSwipeEnd += OnSwipeEnd;
+        Sword.Instance.OnCut += OnCut;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        Sword.Instance.OnSwipeEnd -= OnSwipeEnd;
+        Sword.Instance.OnCut -= OnCut;
     }
 
-    private void OnSwipeEnd(Vector3 start, Vector3 end)
+    private void OnCut(Plane cuttingPlane)
     {
-        foreach (WeakPointPair weakPointPair in UncutWeakPoints)
+        SlicedHull hull = gameObject.Slice(cuttingPlane.ClosestPointOnPlane(transform.position), cuttingPlane.normal, mat);
+        if (hull == null) return;
+        GameObject upperHull = hull.CreateUpperHull(gameObject);
+        GameObject lowerHull = hull.CreateLowerHull(gameObject);
+        Transform hullParent = transform;
+        if (upperHull != null)
         {
-            if (weakPointPair.TouchedPair(start, end, Sword.Instance.GetCameraPosition()))
-            {
-                weakPointPair.Cut();
-                break;
-            }
+            SetupHull(upperHull, hullParent);
+            points++;
         }
 
-        if (weakPoints.All((w) => w.cut))
+        if (lowerHull != null)
         {
-            Destroy(gameObject);
+            SetupHull(lowerHull, hullParent);
+            points++;
         }
-    }
-    public void Reset() {
-        weakPoints.ForEach(x => x.Reset());
-        gameObject.SetActive(true);
-    }
-}
 
-[System.Serializable]
-public class WeakPointPair
-{
-    public WeakPoint first;
-    public WeakPoint last;
-    public bool cut { get; private set; }
-    private Plane plane = new Plane();
-    public bool TouchedPair(Vector3 start, Vector3 end, Vector3 mainCameraPosition)
-    {
-        Vector3 origin = start;
-        Vector3 direction = end - origin;
-        Ray ray = new Ray(origin, direction);
-        Sword.Instance.SetLine(ray, direction.magnitude);
-        plane.Set3Points(origin, end, mainCameraPosition);
-        return first.Contains(plane) && last.Contains(plane);
+        Debug.Log(points);
+        gameObject.SetActive(false);
     }
 
-    public void SetSwordLine(Ray ray)
-    {
-        Sword.Instance.SetLine(ray, ray.direction.magnitude);
-    }
+    private static uint points = 0;
 
-    public void Cut()
+    private static void SetupHull(GameObject hull, Transform hullParent)
     {
-        first.gameObject.SetActive(false);
-        last.gameObject.SetActive(false);
-        cut = true;
-    }
-
-    public void Reset()
-    {
-        first.gameObject.SetActive(true);
-        last.gameObject.SetActive(true);
-        cut = false;
+        if (hull == null) return;
+        hull.AddComponent<BoxCollider>();
+        Rigidbody hullRb = hull.AddComponent<Rigidbody>();
+        hull.AddComponent<CuttableObject>();
+        hull.transform.position = hullParent.position;
+        hull.transform.rotation = hullParent.rotation;
+        hullRb.AddExplosionForce(
+            100, hull.transform.position, 10);
+        Destroy(hull, 2 + Random.Range(0f,1f));
     }
 }

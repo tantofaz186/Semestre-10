@@ -28,7 +28,7 @@ public class Cannon : MonoBehaviour
         var nextObject = spawnedObjects[next];
         nextObject.transform.position = shootPoint.position;
         nextObject.rb.Sleep();
-        nextObject.Reset();
+
         nextObject.rb.AddForce(force, ForceMode.Impulse);
 
 
