@@ -2613,37 +2613,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1447065988
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1447065989}
-  m_Layer: 0
-  m_Name: VFX_Slash
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1447065989
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447065988}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 13.16}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1454855870
 GameObject:
   m_ObjectHideFlags: 0
@@ -2834,7 +2803,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144c3cdebc5ec0c458b9dd092c334d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deadzone: 0.25
   lineRenderer: {fileID: 1719971449}
   swordTrailVFX: {fileID: 306658385}
 --- !u!120 &1719971449
@@ -3359,7 +3327,6 @@ SceneRoots:
   - {fileID: 1254764231}
   - {fileID: 150013396}
   - {fileID: 306658383}
-  - {fileID: 1447065989}
   - {fileID: 500566590}
   - {fileID: 1902319306}
   - {fileID: 1033458404}
