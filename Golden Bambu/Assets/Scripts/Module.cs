@@ -10,7 +10,7 @@ public class Module : MonoBehaviour
     {
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            spawnPoints = GetComponentsInChildren<Transform>();
+            spawnPoints = GetComponentsInChildren<Transform>()[1..];
         }
     }
     #endif

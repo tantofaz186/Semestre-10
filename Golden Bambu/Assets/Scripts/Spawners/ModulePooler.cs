@@ -50,6 +50,8 @@ namespace Spawners
         public void ReturnModule(Module module)
         {
             module.gameObject.SetActive(false);
+            module.transform.position = Vector3.zero;
+            module.transform.rotation = Quaternion.identity;
         }
         
         
