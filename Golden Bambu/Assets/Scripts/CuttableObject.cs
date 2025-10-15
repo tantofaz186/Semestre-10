@@ -65,13 +65,14 @@ public class CuttableObject : MonoBehaviour
     private static void SetupHull(GameObject hull, Transform hullParent)
     {
         if (hull == null) return;
-        hull.AddComponent<BoxCollider>();
+        var boxCollider = hull.AddComponent<BoxCollider>();
         Rigidbody hullRb = hull.AddComponent<Rigidbody>();
         hull.AddComponent<CuttableObject>();
         hull.transform.position = hullParent.position;
         hull.transform.rotation = hullParent.rotation;
         hullRb.AddExplosionForce(
             100, hull.transform.position, 10);
-        Destroy(hull, 2 + Random.Range(0f,1f));
+        Destroy(hull, 0.5f + Random.Range(0f,1f));
+        boxCollider.isTrigger = true;
     }
 }

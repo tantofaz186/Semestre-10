@@ -482,7 +482,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 13.16}
-  m_LocalScale: {x: 10, y: 0.42401, z: 10}
+  m_LocalScale: {x: 8, y: 0.42401, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1992,6 +1992,7 @@ GameObject:
   - component: {fileID: 1143701970}
   - component: {fileID: 1143701969}
   - component: {fileID: 1143701968}
+  - component: {fileID: 1143701972}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -2015,7 +2016,7 @@ MonoBehaviour:
   - {fileID: 883105081}
   - {fileID: 883105081}
   shootPoint: {fileID: 1454855871}
-  force: {x: 0, y: 10, z: -10}
+  force: {x: 0, y: 150, z: -2000}
 --- !u!23 &1143701969
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2077,14 +2078,28 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1143701967}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38268274, y: -0, z: -0, w: 0.9238798}
-  m_LocalPosition: {x: 0, y: -5.31, z: 15.24}
+  m_LocalRotation: {x: -0.6644886, y: -0, z: -0, w: 0.7472984}
+  m_LocalPosition: {x: 0, y: 1.85, z: 22.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1454855871}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -83.286, y: 0, z: 0}
+--- !u!114 &1143701972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143701967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 846b7950c075ff54c9f5d0206b1d806d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1772797661}
+  customOffset: 0
 --- !u!1001 &1178944387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2518,6 +2533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 1719971449}
   swordTrailVFX: {fileID: 306658385}
+  player: {fileID: 1772797656}
 --- !u!120 &1719971449
 LineRenderer:
   serializedVersion: 2
@@ -2706,7 +2722,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772797655}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 80
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2723,7 +2739,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &1772797658
 CapsuleCollider:
@@ -3088,20 +3104,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 557557231518323177, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
+      propertyPath: m_Mass
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 557557231518323177, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2339248532755848514, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5.28
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2339248532755848514, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5.28
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2339248532755848514, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5.28
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2339248532755848514, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3146,6 +3166,10 @@ PrefabInstance:
     - target: {fileID: 2339248532755848514, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4803879176579783143, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5130663546456595023, guid: 26276663e1a51194eb4eaa87d6b36556, type: 3}
       propertyPath: m_Name

@@ -855,7 +855,7 @@
     },
     "m_AllowMaterialOverride": true,
     "m_SurfaceType": 1,
-    "m_ZTestMode": 4,
+    "m_ZTestMode": 8,
     "m_ZWriteControl": 0,
     "m_AlphaMode": 2,
     "m_RenderFace": 1,
@@ -1698,8 +1698,8 @@
     "m_ObjectId": "8eab07cfa6cd4b1895c37a2e124c85b0",
     "m_Title": "New Group",
     "m_Position": {
-        "x": -1050.9998779296875,
-        "y": -396.9999084472656
+        "x": -1051.0,
+        "y": -397.0
     }
 }
 

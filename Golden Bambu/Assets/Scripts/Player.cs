@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public float speed;
     private Rigidbody rb;
     private Collider col;
-    private const float MAX_SPEED = 20;
+    private const float MAX_SPEED = 16;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();

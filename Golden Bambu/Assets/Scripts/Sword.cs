@@ -14,7 +14,7 @@ public class Sword : MonoBehaviour
     Camera mainCamera;
     public LineRenderer lineRenderer;
     [SerializeField] VisualEffect swordTrailVFX;
-
+    [SerializeField] private Player player;
     public delegate void Swipe(Vector3 start, Vector3 end);
 
     public delegate void SwipePlane(Plane plane);
@@ -67,8 +67,7 @@ public class Sword : MonoBehaviour
     private void SetupVfx(Vector3 swipeEndPosition, Vector3 mainCameraPosition, Vector3 planeNormal)
     {
         Vector3 midPoint = (swipeEndPosition + swipeStartPosition) / 2;
-        swordTrailVFX.transform.position = new(midPoint.x, mainCameraPosition.y,
-            mainCameraPosition.z);
+        swordTrailVFX.transform.position = player.transform.position;
         swordTrailVFX.transform.LookAt(midPoint, planeNormal);
         swordTrailVFX.Play();
     }
@@ -77,11 +76,11 @@ public class Sword : MonoBehaviour
     {
         swipeStartPosition = TreatPosition(moveAction.ReadValue<Vector2>());
     }
-    
+
     private Vector3 TreatPosition(Vector2 untreatedPosition)
     {
         Vector3 treatedPosition = untreatedPosition;
-        treatedPosition.z = -1 * mainCamera.transform.position.z;
+        treatedPosition.z = mainCamera.transform.position.z + 11;
         return mainCamera.ScreenToWorldPoint(treatedPosition);
     }
 
