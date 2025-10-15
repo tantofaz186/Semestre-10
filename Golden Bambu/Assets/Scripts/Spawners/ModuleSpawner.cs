@@ -12,6 +12,19 @@ namespace Spawners
     {
         private Module lastModule;
 
+        private void Start()
+        {
+            SpawnFirstModule();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SpawnModule();
+            }
+        }
+
         public Module SpawnFirstModule()
         {
             Module module = ModulePooler.Instance.GetModule();
@@ -46,10 +59,12 @@ namespace Spawners
                 SpawnFirstModule();
             }
             markedForDeletion.Add(lastModule);
+            int failsafe = 0;
             do
             {
                 markedForDeletion.Add(SpawnModule());
-            } while (!(lastModule.gameObject.name.Contains("Turn") || lastModule.gameObject.name.Contains("Fork")));
+                failsafe++;
+            } while (!(lastModule.gameObject.name.Contains("Turn") || lastModule.gameObject.name.Contains("Fork") || failsafe > 10));
             markedForDeletion.Remove(lastModule);
         }
 
