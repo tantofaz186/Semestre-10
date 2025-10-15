@@ -67,7 +67,7 @@ public class Sword : MonoBehaviour
     private void SetupVfx(Vector3 swipeEndPosition, Vector3 mainCameraPosition, Vector3 planeNormal)
     {
         Vector3 midPoint = (swipeEndPosition + swipeStartPosition) / 2;
-        swordTrailVFX.transform.position = player.transform.position;
+        swordTrailVFX.transform.position = new(midPoint.x, player.transform.position.y, player.transform.position.z);
         swordTrailVFX.transform.LookAt(midPoint, planeNormal);
         swordTrailVFX.Play();
     }
@@ -80,7 +80,7 @@ public class Sword : MonoBehaviour
     private Vector3 TreatPosition(Vector2 untreatedPosition)
     {
         Vector3 treatedPosition = untreatedPosition;
-        treatedPosition.z = mainCamera.transform.position.z + 11;
+        treatedPosition.z = player.transform.position.z + 11;
         return mainCamera.ScreenToWorldPoint(treatedPosition);
     }
 
