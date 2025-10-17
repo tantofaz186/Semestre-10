@@ -1,19 +1,12 @@
-using System;
 using EzySlice;
 using UnityEngine;
 using Plane = UnityEngine.Plane;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Rigidbody))]
 public class CuttableObject : MonoBehaviour
 {
-    public Rigidbody rb { get; private set; }
-    private Material mat;
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-        mat = GetComponent<MeshRenderer>().sharedMaterial;
-    }
+    public Rigidbody rb;
+    public Material mat;
 
     private void Start()
     {
@@ -28,8 +21,10 @@ public class CuttableObject : MonoBehaviour
     
     public void Deactivate()
     {
-        gameObject.SetActive(false);
         Sword.Instance.OnCut -= OnCut;
+        gameObject.SetActive(false);
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
     }
     
     private void OnDisable()
@@ -62,12 +57,13 @@ public class CuttableObject : MonoBehaviour
 
     private static uint points = 0;
 
-    private static void SetupHull(GameObject hull, Transform hullParent)
+    private void SetupHull(GameObject hull, Transform hullParent)
     {
         if (hull == null) return;
-        var boxCollider = hull.AddComponent<BoxCollider>();
+        BoxCollider boxCollider = hull.AddComponent<BoxCollider>();
         Rigidbody hullRb = hull.AddComponent<Rigidbody>();
-        hull.AddComponent<CuttableObject>();
+        CuttableObject cuttableObject = hull.AddComponent<CuttableObject>();
+        cuttableObject.mat = mat;
         hull.transform.position = hullParent.position;
         hull.transform.rotation = hullParent.rotation;
         hullRb.AddExplosionForce(

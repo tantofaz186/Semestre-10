@@ -78,7 +78,7 @@ public class Sword : MonoBehaviour
     private Vector3 TreatPosition(Vector2 untreatedPosition)
     {
         Vector3 treatedPosition = untreatedPosition;
-        treatedPosition.z = player.transform.position.z + 11;
+        treatedPosition.z = /*player.transform.position.z + */11;
         return mainCamera.ScreenToWorldPoint(treatedPosition);
     }
 
