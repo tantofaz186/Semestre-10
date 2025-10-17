@@ -12,7 +12,6 @@ public class Sword : MonoBehaviour
     private InputAction touchAction, moveAction;
     private SwordControl control;
     Camera mainCamera;
-    public LineRenderer lineRenderer;
     [SerializeField] VisualEffect swordTrailVFX;
     [SerializeField] private Player player;
     public delegate void Swipe(Vector3 start, Vector3 end);
@@ -41,7 +40,6 @@ public class Sword : MonoBehaviour
         moveAction.Enable();
         touchAction.started += OnTouchActionStarted;
         touchAction.canceled += OnTouchActionCanceled;
-        lineRenderer = GetComponent<LineRenderer>();
     }
 
     Vector3 swipeStartPosition;
