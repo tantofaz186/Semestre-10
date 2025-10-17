@@ -300,9 +300,23 @@ MonoBehaviour:
       data:
         shaderGraph: {fileID: 4333940904281232215, guid: ed4bcaffdf83fe54db17682ef8c0ed51, type: 3}
         materialSettings:
-          m_PropertyNames: []
-          m_PropertyValues: []
-          renderQueue: 2000
+          m_PropertyNames:
+          - _AlphaClip
+          - _Blend
+          - _Cull
+          - _DstBlend
+          - _DstBlendAlpha
+          - _SrcBlend
+          - _ZTest
+          m_PropertyValues:
+          - 0
+          - 2
+          - 0
+          - 1
+          - 1
+          - 5
+          - 8
+          renderQueue: 3000
 --- !u!114 &114350483966675096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,7 +562,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":4.8671441078186039,"g":0.9161683917045593,"b":0.8779946565628052,"a":1.0}'
+      m_SerializableObject: '{"r":5.884999752044678,"g":0.06530590355396271,"b":0.027759497985243799,"a":1.0}'
     m_Space: -1
   m_Property:
     name: _Color
@@ -1299,7 +1313,7 @@ MonoBehaviour:
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
-  - {fileID: 114350483966675168}
+  - {fileID: 114350483966675265}
   - {fileID: 114350483966675169}
   m_OutputSlots: []
   m_Disabled: 0
@@ -1307,40 +1321,6 @@ MonoBehaviour:
   repeat: 0
   spawnMode: 0
   delayMode: 0
---- !u!114 &114350483966675168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f780aa281814f9842a7c076d436932e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UIIgnoredErrors: []
-  m_Parent: {fileID: 0}
-  m_Children: []
-  m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
-  m_UISuperCollapsed: 0
-  m_MasterSlot: {fileID: 114350483966675168}
-  m_MasterData:
-    m_Owner: {fileID: 114350483966675167}
-    m_Value:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1
-    m_Space: -1
-  m_Property:
-    name: Count
-    m_serializedType:
-      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-  m_Direction: 0
-  m_LinkedSlots: []
 --- !u!114 &114350483966675169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1592,11 +1572,27 @@ MonoBehaviour:
         shaderGraph: {fileID: 4333940904281232215, guid: ed4bcaffdf83fe54db17682ef8c0ed51, type: 3}
         materialSettings:
           m_PropertyNames:
+          - _AlphaClip
           - _Blend
           - _DstBlend
+          - _DstBlendAlpha
+          - _QueueOffset
+          - _SrcBlend
+          - _SrcBlendAlpha
+          - _ZTest
+          - _ZWrite
+          - _ZWriteControl
           m_PropertyValues:
           - 0
-          - 10
+          - 3
+          - 0
+          - 1
+          - 0
+          - 2
+          - 0
+          - 8
+          - 0
+          - 0
           renderQueue: 3000
 --- !u!114 &114350483966675182
 MonoBehaviour:
@@ -2674,3 +2670,37 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 114350483966675216}
+--- !u!114 &114350483966675265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f780aa281814f9842a7c076d436932e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 114350483966675265}
+  m_MasterData:
+    m_Owner: {fileID: 114350483966675167}
+    m_Value:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 1
+    m_Space: -1
+  m_Property:
+    name: Count
+    m_serializedType:
+      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+  m_Direction: 0
+  m_LinkedSlots: []
