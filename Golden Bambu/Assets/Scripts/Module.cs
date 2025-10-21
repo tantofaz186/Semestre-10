@@ -4,7 +4,6 @@ using UnityEngine;
 public class Module : MonoBehaviour
 {
     public Transform[] spawnPoints;
-
     #if UNITY_EDITOR
     private void OnValidate()
     {

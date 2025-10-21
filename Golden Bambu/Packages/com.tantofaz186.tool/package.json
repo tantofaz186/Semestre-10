@@ -1,0 +1,11 @@
+{
+  "name": "com.tantofaz186.tool",
+  "version": "1.0.0",
+  "displayName": "tantofaz186",
+  "description": "",
+  "unity": "6000.0",
+  "author": {
+    "name": "Tomás Pedron",
+    "email": "tomasturchi98@gmail.com"
+  }
+}
