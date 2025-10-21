@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -37,27 +36,57 @@ namespace Spawners
         public Module SpawnModule()
         {
             Module module = ModulePooler.Instance.GetModule();
-            Transform spawnPoint = lastModule.spawnPoints[1];
+            Transform spawnPoint = PickRandomAvailableSpawnPoint(lastModule);
             AlignModule(module, spawnPoint);
             lastModule = module;
             return module;
         }
+
+        private void AlignModule(Module module, Transform spawnPoint)
+        {
+            Transform randomSpawnPoint = PickRandomSpawnPoint(module);
+            Transform moduleTransform = module.transform;
+            moduleTransform.forward = -spawnPoint.forward;
+            moduleTransform.position = spawnPoint.position - randomSpawnPoint.position;
+            moduleTransform.RotateAround(randomSpawnPoint.position, randomSpawnPoint.up,
+                -randomSpawnPoint.localEulerAngles.y);
+        }
+
+        private int lastUsedSpawnPoint;
+
+        private Transform PickRandomSpawnPoint(Module module)
+        {
+            int random = Random.Range(0, module.spawnPoints.Length);
+            lastUsedSpawnPoint = random;
+            return module.spawnPoints[random];
+        }
+
+        private Transform PickRandomAvailableSpawnPoint(Module module)
+        {
+            int random = Random.Range(0, module.spawnPoints.Length);
+            if (random == lastUsedSpawnPoint) random = (random + 1) % module.spawnPoints.Length;
+            lastUsedSpawnPoint = random;
+            return module.spawnPoints[random];
+        }
+
         private List<Module> markedForDeletion = new List<Module>();
-        private int i = 0; 
+        private int i = 0;
+
         public void SpawnUntilTurn()
         {
-
-            if (i++%2 == 0)
+            if (i++ % 2 == 0)
             {
                 foreach (Module module in markedForDeletion)
                 {
                     ModulePooler.Instance.ReturnModule(module);
                 }
             }
+
             if (lastModule == null)
             {
                 SpawnFirstModule();
             }
+
             markedForDeletion.Add(lastModule);
             int failsafe = 0;
             do
@@ -65,16 +94,8 @@ namespace Spawners
                 markedForDeletion.Add(SpawnModule());
                 failsafe++;
             } while (!(lastModule.gameObject.name.Contains("Turn") || lastModule.gameObject.name.Contains("Fork") || failsafe > 10));
-            markedForDeletion.Remove(lastModule);
-        }
 
-        private void AlignModule(Module module, Transform spawnPoint)
-        {
-            Transform moduleTransform = module.transform;
-            moduleTransform.forward = -spawnPoint.forward;
-            moduleTransform.position = spawnPoint.position - module.spawnPoints[0].position;
-            moduleTransform.RotateAround(module.spawnPoints[0].position, module.spawnPoints[0].up,
-                -module.spawnPoints[0].localEulerAngles.y);
+            markedForDeletion.Remove(lastModule);
         }
     }
 
