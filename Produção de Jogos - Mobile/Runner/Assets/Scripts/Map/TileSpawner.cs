@@ -14,7 +14,7 @@ namespace Map
         [SerializeField] private Tile nextTileToDestroy;
         private Queue<Tile> tileQueue = new Queue<Tile>();
         private int initialTiles = 8;
-
+        public static event Action<Tile> OnTileSpawned;
         private void Start()
         {
             for (int i = 0; i < initialTiles; i++)
@@ -55,7 +55,9 @@ namespace Map
 
         private Tile InstantiateTile(Tile tile)
         {
-            return Instantiate(tile, currentTile.SpawnPoint.position, Quaternion.identity);
+            Tile instanciatedTile = Instantiate(tile, currentTile.SpawnPoint.position, Quaternion.identity);
+            OnTileSpawned?.Invoke(instanciatedTile);
+            return instanciatedTile;
         }
         private void DequeueTile()
         {

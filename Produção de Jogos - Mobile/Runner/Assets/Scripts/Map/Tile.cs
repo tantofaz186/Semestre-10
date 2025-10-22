@@ -5,5 +5,6 @@ namespace Map
     public class Tile : MonoBehaviour
     {
         public Transform SpawnPoint;
+        public Transform[] CollectableSpawnPoints;
     }
 }

@@ -7,7 +7,6 @@ namespace Obstacles
         protected override void OnPlayerCollision()
         {
             GameManager.Instance.ApplyPlayerSlow();
-            Destroy(gameObject);
         }
     }
 }
