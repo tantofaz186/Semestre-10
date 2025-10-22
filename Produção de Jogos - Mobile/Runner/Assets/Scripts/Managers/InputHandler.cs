@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Collectables;
 using UnityEngine;
 
 namespace Managers
@@ -33,6 +35,16 @@ namespace Managers
         {
             HandleTouch();
             HandleKeyboard();
+        }
+
+        private void Start()
+        {
+            InvertControls.OnInvertControlsCollected += ApplyInvertControls;
+        }
+
+        private void OnDestroy()
+        {
+            InvertControls.OnInvertControlsCollected -= ApplyInvertControls;
         }
 
         #endregion
@@ -96,14 +108,42 @@ namespace Managers
 
         public void PressedLeft()
         {
-            onLeftDirection?.Invoke();
+            if (!controlsInverted)
+            {
+                onLeftDirection?.Invoke();
+            }
+            else
+            {
+                onRightDirection?.Invoke();
+            }
         }
 
         public void PressedRight()
         {
-            onRightDirection?.Invoke();
+            if (!controlsInverted)
+            {
+                onRightDirection?.Invoke();
+            }
+            else
+            {
+                onLeftDirection?.Invoke();
+            }
         }
 
         #endregion
+        
+        bool controlsInverted = false;
+        public void ApplyInvertControls(float duration)
+        {
+            controlsInverted = true;
+            StartCoroutine(RestoreControls(duration));
+        }
+
+        private IEnumerator RestoreControls(float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            controlsInverted = false;
+        }
+
     }
 }

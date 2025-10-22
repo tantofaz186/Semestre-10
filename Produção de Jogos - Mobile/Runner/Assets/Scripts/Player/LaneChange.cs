@@ -1,3 +1,4 @@
+using Collectables;
 using Managers;
 using UnityEngine;
 

@@ -13,6 +13,7 @@ namespace Obstacles
             {
                 OnPlayerCollision();
             }
+            Destroy(gameObject);
         }
     }
 }
