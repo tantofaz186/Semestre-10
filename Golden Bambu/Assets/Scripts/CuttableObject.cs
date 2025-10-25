@@ -1,3 +1,4 @@
+using System.Collections;
 using EzySlice;
 using UnityEngine;
 using Plane = UnityEngine.Plane;
@@ -34,27 +35,39 @@ public class CuttableObject : MonoBehaviour
 
     private void OnCut(Plane cuttingPlane)
     {
-        SlicedHull hull = gameObject.Slice(cuttingPlane.ClosestPointOnPlane(transform.position), cuttingPlane.normal, mat);
-        if (hull == null) return;
+        Vector3 closestPoint = cuttingPlane.ClosestPointOnPlane(transform.position);
+        if(Vector3.Distance(closestPoint, transform.position) > 1.5f)
+            return;
+        StartCoroutine(Cut(closestPoint, cuttingPlane.normal));
+        
+    }
+
+    private IEnumerator Cut(Vector3 closestPoint, Vector3 normal)
+    {
+        yield return new WaitForSeconds(Random.Range(0, 0.12f));
+        SlicedHull hull = gameObject.Slice(closestPoint, normal, mat);
+        if (hull == null) yield break;
+        yield return null;
         GameObject upperHull = hull.CreateUpperHull(gameObject);
+        yield return null;
         GameObject lowerHull = hull.CreateLowerHull(gameObject);
         Transform hullParent = transform;
         if (upperHull != null)
         {
+            yield return null;
             SetupHull(upperHull, hullParent);
             points++;
         }
 
         if (lowerHull != null)
         {
+            yield return null;
             SetupHull(lowerHull, hullParent);
             points++;
         }
-
-        Debug.Log(points);
+        yield return null;
         Deactivate();
     }
-
     private static uint points = 0;
 
     private void SetupHull(GameObject hull, Transform hullParent)
