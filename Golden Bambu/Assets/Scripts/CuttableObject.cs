@@ -68,7 +68,7 @@ public class CuttableObject : MonoBehaviour
         yield return null;
         Deactivate();
     }
-    private static uint points = 0;
+    public static uint points = 0;
 
     private void SetupHull(GameObject hull, Transform hullParent)
     {

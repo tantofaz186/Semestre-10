@@ -7,23 +7,28 @@ namespace Packages.com.tantofaz186.tool.Editor
     [CustomEditor(typeof(Module))]
     public class UmaTool : Editor
     {
+        private Module module;
+
+        protected void OnEnable()
+        {
+            module = target as Module;
+        }
+
         protected virtual void OnSceneGUI()
         {
-            Module module = target as Module;
-            foreach (var spawnPoint in module.spawnPoints)
+            foreach (Transform spawnPoint in module.spawnPoints)
             {
-                if (Handles.Button(spawnPoint.transform.position, spawnPoint.transform.rotation, 10, 20, Handles.RectangleHandleCap))
+                if (Handles.Button(spawnPoint.position, spawnPoint.rotation, 2, 2, Handles.RectangleHandleCap))
                 {
-                    Debug.Log(spawnPoint.transform.position);
-                    Debug.Log(spawnPoint.transform.rotation);
-                    Module instantiated = Instantiate(module, spawnPoint.transform.position, Quaternion.identity);
+                    Module instantiated = Instantiate(module, module.transform.position, Quaternion.identity);
                     instantiated.transform.forward = -spawnPoint.forward;
-                    instantiated.transform.position = spawnPoint.position - instantiated.spawnPoints[0].position;
-                    instantiated.transform.RotateAround(spawnPoint.transform.position, spawnPoint.transform.up,
-                        -spawnPoint.transform.localEulerAngles.y);
-                };
-            }
+                    instantiated.transform.position = module.transform.position -
+                                                      (instantiated.spawnPoints[0].position - spawnPoint.position);
 
+                    instantiated.transform.RotateAround(instantiated.spawnPoints[0].position, instantiated.spawnPoints[0].up,
+                        -instantiated.spawnPoints[0].localEulerAngles.y);
+                }
+            }
         }
     }
 }
