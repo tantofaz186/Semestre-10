@@ -18,16 +18,19 @@ namespace Packages.com.tantofaz186.tool.Editor
         {
             foreach (Transform spawnPoint in module.spawnPoints)
             {
-                if (Handles.Button(spawnPoint.position, spawnPoint.rotation, 2, 2, Handles.RectangleHandleCap))
+                if (Handles.Button(spawnPoint.position, spawnPoint.rotation, 2 * module.transform.localScale.magnitude/3, 2 * module.transform.localScale.magnitude/3, Handles.RectangleHandleCap))
                 {
                     Module instantiated = Instantiate(module, module.transform.position, Quaternion.identity);
+                    int next = Mathf.RoundToInt(Random.value * instantiated.spawnPoints.Length) % instantiated.spawnPoints.Length;
+
                     instantiated.transform.forward = -spawnPoint.forward;
                     instantiated.transform.position = module.transform.position -
-                                                      (instantiated.spawnPoints[0].position - spawnPoint.position);
-
-                    instantiated.transform.RotateAround(instantiated.spawnPoints[0].position, instantiated.spawnPoints[0].up,
-                        -instantiated.spawnPoints[0].localEulerAngles.y);
+                                                      (instantiated.spawnPoints[next].position - spawnPoint.position);
+                    
+                    instantiated.transform.RotateAround(instantiated.spawnPoints[next].position, instantiated.spawnPoints[next].up,
+                        -instantiated.spawnPoints[next].localEulerAngles.y);
                 }
+                
             }
         }
     }
