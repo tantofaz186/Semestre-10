@@ -21,7 +21,6 @@ public class Cannon : MonoBehaviour
 
     private void Start()
     {
-        SpawnNextMusic();
     }
 
     public Vector3 force;
@@ -56,13 +55,14 @@ public class Cannon : MonoBehaviour
 
     }
 
-    public void SpawnNextMusic()
+    public void SpawnNextMusic(AudioClipWithTempo clipWithTempo)
     {
-        if (isSpawning) return;
+        StopSpawning();
         isSpawning = true;
-        
-        InvokeRepeating(nameof(SpawnNext), 0, 1f);
-        InvokeRepeating(nameof(SpawnNext), 1.25f, 2f);
+        foreach (var spawningTempo in clipWithTempo.spawningTempos)
+        {
+            InvokeRepeating(nameof(SpawnNext), spawningTempo * clipWithTempo.musicTempo, clipWithTempo.musicLoopTime);
+        }
     }
     [CustomEditor(typeof(Cannon))]
     public class Cannon_Inspector : Editor
