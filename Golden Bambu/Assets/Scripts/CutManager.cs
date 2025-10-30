@@ -60,6 +60,7 @@ public class CutManager : MonoBehaviour
         Rigidbody hullRb = hull.AddComponent<Rigidbody>();
         CuttableObject cuttableObject = hull.AddComponent<CuttableObject>();
         cuttableObject.mat = mat;
+        cuttableObject.col = boxCollider;
         hull.transform.position = position;
         hull.transform.rotation = rotation;
         hullRb.Sleep();

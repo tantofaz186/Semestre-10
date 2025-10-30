@@ -1,14 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
 
 public class Cannon : MonoBehaviour
 {
     public List<CuttableObject> objectsToSpawn;
     int next = 0;
-    public Transform shootPoint;
+    public List<Transform> shootPoint;
     private List<CuttableObject> spawnedObjects = new List<CuttableObject>();
 
     void Awake()
@@ -21,17 +19,22 @@ public class Cannon : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        SpawnNextMusic();
+    }
+
     public Vector3 force;
 
     public void SpawnNext()
     {
         var nextObject = spawnedObjects[next];
-        nextObject.transform.position = shootPoint.position;
+        nextObject.transform.position = shootPoint[Random.Range(0, shootPoint.Count)].position;
         nextObject.Reset();
 
 
         nextObject.rb.Sleep();
-        nextObject.rb.AddForce(force, ForceMode.Impulse);
+        nextObject.rb.AddForce(force, ForceMode.VelocityChange);
 
 
         next++;
@@ -40,13 +43,27 @@ public class Cannon : MonoBehaviour
 
     bool isSpawning = false;
 
+    public void StopSpawning()
+    {
+        CancelInvoke();
+        isSpawning = false;
+    }
     public void SpawnNextPerSecond()
     {
         if (isSpawning) return;
         isSpawning = true;
         InvokeRepeating(nameof(SpawnNext), 0, 1f);
+
     }
 
+    public void SpawnNextMusic()
+    {
+        if (isSpawning) return;
+        isSpawning = true;
+        
+        InvokeRepeating(nameof(SpawnNext), 0, 1f);
+        InvokeRepeating(nameof(SpawnNext), 1.25f, 2f);
+    }
     [CustomEditor(typeof(Cannon))]
     public class Cannon_Inspector : Editor
     {
