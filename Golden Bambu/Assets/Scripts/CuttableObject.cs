@@ -38,50 +38,7 @@ public class CuttableObject : MonoBehaviour
         Vector3 closestPoint = cuttingPlane.ClosestPointOnPlane(transform.position);
         if(Vector3.Distance(closestPoint, transform.position) > 1.5f)
             return;
-        StartCoroutine(Cut(closestPoint, cuttingPlane.normal));
-        
+        CutManager.Instance.CutObject(this, closestPoint, cuttingPlane.normal);
     }
 
-    private IEnumerator Cut(Vector3 closestPoint, Vector3 normal)
-    {
-        yield return new WaitForSeconds(Random.Range(0, 0.12f));
-        SlicedHull hull = gameObject.Slice(closestPoint, normal, mat);
-        if (hull == null) yield break;
-        yield return null;
-        GameObject upperHull = hull.CreateUpperHull(gameObject);
-        yield return null;
-        GameObject lowerHull = hull.CreateLowerHull(gameObject);
-        Transform hullParent = transform;
-        if (upperHull != null)
-        {
-            yield return null;
-            SetupHull(upperHull, hullParent);
-            points++;
-        }
-
-        if (lowerHull != null)
-        {
-            yield return null;
-            SetupHull(lowerHull, hullParent);
-            points++;
-        }
-        yield return null;
-        Deactivate();
-    }
-    public static uint points = 0;
-
-    private void SetupHull(GameObject hull, Transform hullParent)
-    {
-        if (hull == null) return;
-        BoxCollider boxCollider = hull.AddComponent<BoxCollider>();
-        Rigidbody hullRb = hull.AddComponent<Rigidbody>();
-        CuttableObject cuttableObject = hull.AddComponent<CuttableObject>();
-        cuttableObject.mat = mat;
-        hull.transform.position = hullParent.position;
-        hull.transform.rotation = hullParent.rotation;
-        hullRb.AddExplosionForce(
-            100, hull.transform.position, 10);
-        Destroy(hull, 0.5f + Random.Range(0f,1f));
-        boxCollider.isTrigger = true;
-    }
 }

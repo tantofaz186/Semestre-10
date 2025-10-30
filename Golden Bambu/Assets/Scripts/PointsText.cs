@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -10,8 +11,13 @@ public class PointsText : MonoBehaviour
         pointsText = GetComponent<TextMeshProUGUI>();
     }
 
+    private void Update()
+    {
+        UpdateScore();
+    }
+
     public void UpdateScore()
     {
-        pointsText.text = CuttableObject.points.ToString();
+        pointsText.text = CutManager.Instance.points.ToString();
     }
 }
