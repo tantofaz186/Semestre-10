@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace Spawners
+﻿namespace Spawners
 {
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    #if UNITY_EDITOR
+    using UnityEditor;
+    #endif
+
     public class ModuleSpawner : MonoBehaviour
     {
         private Module lastModule;
@@ -98,9 +98,7 @@ namespace Spawners
             markedForDeletion.Remove(lastModule);
         }
     }
-
     #if UNITY_EDITOR
-
     [CustomEditor(typeof(ModuleSpawner))]
     public class ModuleSpawnerEditor : Editor
     {

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class Cannon : MonoBehaviour
 {
@@ -64,7 +66,8 @@ public class Cannon : MonoBehaviour
             InvokeRepeating(nameof(SpawnNext), spawningTempo * clipWithTempo.musicTempo, clipWithTempo.musicLoopTime);
         }
     }
-    [CustomEditor(typeof(Cannon))]
+    #if UNITY_EDITOR
+[CustomEditor(typeof(Cannon))]
     public class Cannon_Inspector : Editor
     {
         public override void OnInspectorGUI()
@@ -83,4 +86,5 @@ public class Cannon : MonoBehaviour
             }
         }
     }
+    #endif
 }

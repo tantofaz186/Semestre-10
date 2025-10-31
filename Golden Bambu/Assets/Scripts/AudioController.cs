@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class AudioController : MonoBehaviour
@@ -57,6 +59,7 @@ public class AudioController : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(AudioController))]
 public class AudioControllerEditor : Editor
 {
@@ -83,3 +86,4 @@ public class AudioControllerEditor : Editor
         }
     }
 }
+#endif

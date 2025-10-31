@@ -1,5 +1,6 @@
-using System;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class FollowTarget : MonoBehaviour
@@ -29,7 +30,8 @@ public class FollowTarget : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, desiredPosition, SmoothTime);
     }
 
-    [CustomEditor(typeof(FollowTarget))]
+    #if UNITY_EDITOR
+[CustomEditor(typeof(FollowTarget))]
     public class FollowTargetEditor : Editor
     {
         public override void OnInspectorGUI()
@@ -42,4 +44,5 @@ public class FollowTarget : MonoBehaviour
             }
         }
     }
+    #endif
 }
