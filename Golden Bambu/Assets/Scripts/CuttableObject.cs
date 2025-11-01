@@ -29,7 +29,7 @@ public class CuttableObject : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         Sword.Instance.OnCut -= OnCut;
     }
