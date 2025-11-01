@@ -16,6 +16,7 @@ public class AudioController : MonoBehaviour
     private void Start()
     {
         Sword.Instance.OnCut += PlayCutSound;
+        PlayMusic(mainMusicClips[0].audioClip);
     }
 
 
