@@ -124,6 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 8232411952756044099}
   mat: {fileID: 2100000, guid: e79de77543a7f234d86f64539f2f0cf2, type: 2}
+  col: {fileID: 4803879176579783143}
 --- !u!54 &8232411952756044099
 Rigidbody:
   m_ObjectHideFlags: 0
