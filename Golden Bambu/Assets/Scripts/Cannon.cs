@@ -13,28 +13,31 @@ public class Cannon : MonoBehaviour
 
     void Awake()
     {
-        for (int i = 0; i < objectsToSpawn.Count; i++)
-        {
-            CuttableObject obj = Instantiate(objectsToSpawn[i]);
-            spawnedObjects.Add(obj);
-            spawnedObjects[i].gameObject.SetActive(false);
-        }
+
     }
 
     private void Start()
     {
+        for (int i = 0; i < objectsToSpawn.Count; i++)
+        {
+            CuttableObject obj = Instantiate(objectsToSpawn[i]);
+            spawnedObjects.Add(obj);
+            spawnedObjects[i].Deactivate();
+        }
+        SpawnNextPerSecond();
     }
 
     public Vector3 force;
-
+    public float torque;
     public void SpawnNext()
     {
         var nextObject = spawnedObjects[next];
-        nextObject.transform.position = shootPoint[Random.Range(0, shootPoint.Count)].position;
         nextObject.Reset();
+        nextObject.transform.position = shootPoint[Random.Range(0, shootPoint.Count)].position;
 
 
         nextObject.rb.Sleep();
+        nextObject.rb.AddTorque(nextObject.transform.right * torque, ForceMode.VelocityChange);
         nextObject.rb.AddForce(force, ForceMode.VelocityChange);
 
 
