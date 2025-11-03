@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7559852474034632436}
   - component: {fileID: -1989559137119198148}
   - component: {fileID: 8656375640139324255}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "Orelh\xE3o"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
