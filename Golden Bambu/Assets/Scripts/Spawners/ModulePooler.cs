@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Spawners
@@ -9,7 +10,6 @@ namespace Spawners
 
         public List<Module> pooledModules = new List<Module>();
         public static ModulePooler Instance;
-        Queue<Module> markForReuse = new Queue<Module>();
 
         private void Awake()
         {
@@ -39,24 +39,10 @@ namespace Spawners
 
         public Module GetModule()
         {
-            if (markForReuse.Count >= 3)
-            {
-                ReturnModule(markForReuse.Dequeue());
-            }
-
-            foreach (var module in pooledModules)
-            {
-                if (!module.gameObject.activeInHierarchy)
-                {
-                    module.gameObject.SetActive(true);
-                    markForReuse.Enqueue(module);
-                    return module;
-                }
-            }
-
-            var newModule = Instantiate(baseModules[Random.Range(0, baseModules.Length)]);
-            pooledModules.Add(newModule);
-            return newModule;
+            pooledModules.Sort((a,b) => Random.Range(-1,2));
+            var module = pooledModules.First((m) => !m.gameObject.activeInHierarchy);
+            module.gameObject.SetActive(true);
+            return module;
         }
 
         public void ReturnModule(Module module)
