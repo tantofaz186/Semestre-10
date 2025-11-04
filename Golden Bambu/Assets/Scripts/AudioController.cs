@@ -5,22 +5,39 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioController : MonoBehaviour
 {
-    [SerializeField] AudioSource mainAudioSource;
-    [SerializeField] AudioSource sfxAudioSource;
-    [SerializeField] List<AudioClipWithTempo> mainMusicClips;
-    [SerializeField] AudioClip cutSound;
+    [SerializeField]
+    AudioSource mainAudioSource;
+
+    [SerializeField]
+    AudioSource sfxAudioSource;
+
+    [SerializeField]
+    List<AudioClipWithTempo> mainMusicClips;
+
+    [SerializeField]
+    AudioClip cutSound;
+
+    [SerializeField]
+    private AudioMixer mixer;
+
     public static event Action OnMusicEnd;
     public static event Music OnMusicStart;
+
     public delegate void Music(AudioClipWithTempo music);
+
     private void Start()
     {
         Sword.Instance.OnCut += PlayCutSound;
         PlayMusic(mainMusicClips[0]);
-    }
 
+        mixer.SetFloat("MasterVolume", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
+        mixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
+        mixer.SetFloat("SFXVolume", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
+    }
 
     public void StopMusic()
     {
@@ -32,12 +49,14 @@ public class AudioController : MonoBehaviour
     {
         StartCoroutine(PlayNextMusic(music));
     }
+
     private IEnumerator PlayNextMusic(AudioClipWithTempo music)
     {
         mainAudioSource.loop = false;
         yield return new WaitUntil(() => !mainAudioSource.isPlaying);
         PlayMusic(music);
     }
+
     private void PlayMusic(AudioClipWithTempo musicClip)
     {
         mainAudioSource.clip = musicClip.audioClip;
@@ -45,6 +64,7 @@ public class AudioController : MonoBehaviour
         mainAudioSource.Play();
         OnMusicStart?.Invoke(musicClip);
     }
+
     private IEnumerator InvokeEventWhenMusicEnds()
     {
         yield return new WaitUntil(() => !mainAudioSource.isPlaying);
@@ -55,6 +75,7 @@ public class AudioController : MonoBehaviour
     {
         PlayCutSound();
     }
+
     public void PlayCutSound()
     {
         sfxAudioSource.PlayOneShot(cutSound);
@@ -67,6 +88,7 @@ public class AudioControllerEditor : Editor
 {
     AudioController audioController;
     private AudioClipWithTempo nextClipToPlay;
+
     private void OnEnable()
     {
         audioController = (AudioController)target;
@@ -81,7 +103,8 @@ public class AudioControllerEditor : Editor
             audioController.StopMusic();
         }
 
-        nextClipToPlay = EditorGUILayout.ObjectField("Audio Clip to Play", nextClipToPlay, typeof(AudioClipWithTempo), false) as AudioClipWithTempo;
+        nextClipToPlay =
+            EditorGUILayout.ObjectField("Audio Clip to Play", nextClipToPlay, typeof(AudioClipWithTempo), false) as AudioClipWithTempo;
         if (GUILayout.Button("Play Next Music"))
         {
             audioController.PlayNext(nextClipToPlay);

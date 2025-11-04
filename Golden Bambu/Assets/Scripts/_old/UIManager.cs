@@ -6,11 +6,23 @@ public class UIManager : MonoBehaviour
 {
     public Button startButton;
     public Button exitButton;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Slider masterVolumeSlider;
+    public Slider musicVolumeSlider;
+    public Slider sfxVolumeSlider;
     void Awake()
     {
         startButton.onClick.AddListener(StartGame);
         exitButton.onClick.AddListener(QuitGame);
+        if (PlayerPrefs.HasKey("MasterVolume"))
+        {
+            masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume");
+            musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+            sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+        }
+        else
+        {
+            masterVolumeSlider.value = musicVolumeSlider.value = sfxVolumeSlider.value = 1;
+        }
     }
 
     private void StartGame()
@@ -26,5 +38,18 @@ public class UIManager : MonoBehaviour
     {
         startButton.onClick.RemoveListener(StartGame);
         exitButton.onClick.RemoveListener(QuitGame);
+    }
+
+    public void ChangeMasterVolume(float vol)
+    {
+        PlayerPrefs.SetFloat("MasterVolume", vol);
+    }
+    public void ChangeMusicVolume(float vol)
+    {
+        PlayerPrefs.SetFloat("MusicVolume", vol);
+    }
+    public void ChangeSFXVolume(float vol)
+    {
+        PlayerPrefs.SetFloat("SFXVolume", vol);
     }
 }
