@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8384918617097779068}
   - component: {fileID: -1569632590216523474}
   - component: {fileID: 7549374173849712836}
-  - component: {fileID: -5619323594295743734}
-  m_Layer: 0
+  - component: {fileID: 285234462797640709}
+  m_Layer: 6
   m_Name: Sinal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 7549374173849712836}
   mat: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  col: {fileID: -5619323594295743734}
+  col: {fileID: 0}
 --- !u!54 &7549374173849712836
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -131,8 +131,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &-5619323594295743734
-MeshCollider:
+--- !u!65 &285234462797640709
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -149,7 +149,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4266176778584991481, guid: b321d748f8943744fa865da661c6d235, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.8909804, y: 2.7838268, z: 0.44277638}
+  m_Center: {x: 0.029475242, y: 1.4040377, z: 0.08349469}

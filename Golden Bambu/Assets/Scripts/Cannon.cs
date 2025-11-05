@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,11 +12,6 @@ public class Cannon : MonoBehaviour
     public List<Transform> shootPoint;
     private List<CuttableObject> spawnedObjects = new List<CuttableObject>();
 
-    void Awake()
-    {
-
-    }
-
     private void Start()
     {
         for (int i = 0; i < objectsToSpawn.Count; i++)
@@ -24,7 +20,12 @@ public class Cannon : MonoBehaviour
             spawnedObjects.Add(obj);
             spawnedObjects[i].Deactivate();
         }
-        SpawnNextPerSecond();
+        AudioController.OnMusicStart += SpawnNextMusic;
+    }
+
+    private void OnDestroy()
+    {
+        AudioController.OnMusicStart -= SpawnNextMusic;
     }
 
     public Vector3 force;
