@@ -1,14 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
-using TouchPhase = UnityEngine.TouchPhase;
 
 public class Sword : MonoBehaviour
 {
     private static Sword instance;
     public static Sword Instance => instance;
-
-    [SerializeField] private const float deadzone = 4.25f;
+    
+    private const float deadzone = 4.25f;
     private InputAction touchAction, moveAction;
     private SwordControl control;
     Camera mainCamera;
