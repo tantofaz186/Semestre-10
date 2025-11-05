@@ -2682,9 +2682,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startButton: {fileID: 1609181220}
   exitButton: {fileID: 1689472736}
-  masterVolumeSlider: {fileID: 0}
-  musicVolumeSlider: {fileID: 0}
-  sfxVolumeSlider: {fileID: 0}
+  masterVolumeSlider: {fileID: 50711491}
+  musicVolumeSlider: {fileID: 1277986823}
+  sfxVolumeSlider: {fileID: 1230049599}
 --- !u!114 &1834621754
 MonoBehaviour:
   m_ObjectHideFlags: 0
