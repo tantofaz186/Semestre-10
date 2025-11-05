@@ -28,10 +28,8 @@ namespace Spawners
 
         private void Start()
         {
-            var currentTime = DateTime.Now.Ticks;
             while (pooledModules.Count < 8)
             {
-                if(DateTime.Now.Ticks - currentTime > 2) break;
                 foreach (var module in baseModules)
                 {
                     var mod = Instantiate(module);

@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
         col = GetComponent<Collider>();
         anim = GetComponent<Animator>();
     }
-
+    //TODO Fazer o player mover baseado no corte HOOOOOOLY
     public void FixedUpdate()
     {
         if (rb.linearVelocity.magnitude < MAX_SPEED)

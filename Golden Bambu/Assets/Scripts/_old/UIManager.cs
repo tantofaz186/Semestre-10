@@ -7,6 +7,8 @@ public class UIManager : MonoBehaviour
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
+    public GameObject settings;
+    public Button startGameButton;
     void Awake()
     {
         if (PlayerPrefs.HasKey("MasterVolume"))
@@ -19,8 +21,20 @@ public class UIManager : MonoBehaviour
         {
             masterVolumeSlider.value = musicVolumeSlider.value = sfxVolumeSlider.value = 1;
         }
+
+        SetupUI();
     }
 
+    private void SetupUI()
+    {
+        startGameButton.gameObject.SetActive(true);
+        settings.SetActive(false);
+    }
+    public void ToggleSettings()
+    {
+        startGameButton.gameObject.SetActive(settings.activeSelf);
+        settings.SetActive(!settings.activeSelf);
+    }
     public void StartGame()
     {
         SceneManager.LoadScene("Level 1");
