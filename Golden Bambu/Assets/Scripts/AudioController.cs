@@ -9,41 +9,32 @@ using UnityEngine.Audio;
 
 public class AudioController : MonoBehaviour
 {
-    [SerializeField]
-    AudioSource mainAudioSource;
-
-    [SerializeField]
-    AudioSource sfxAudioSource;
-
-    [SerializeField]
-    List<AudioClipWithTempo> mainMusicClips;
-
-    [SerializeField]
-    AudioClip cutSound;
-
-    [SerializeField]
-    private AudioMixer mixer;
+    [SerializeField] AudioSource mainAudioSource;
+    [SerializeField] AudioSource sfxAudioSource;
+    [SerializeField] List<AudioClipWithTempo> mainMusicClips;
+    [SerializeField] AudioClip cutSound;
+    [SerializeField] private AudioMixer mixer;
 
     public static event Action OnMusicEnd;
     public static event Music OnMusicStart;
 
     public delegate void Music(AudioClipWithTempo music);
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return null;
         Sword.Instance.OnCut += PlayCutSound;
         PlayMusic(mainMusicClips[0]);
         ReloadVolume();
-
     }
 
-    public void ReloadVolume(){
-                mixer.SetFloat("MasterVolume", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
-                mixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
-                mixer.SetFloat("SFXVolume", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
-       }
-   
-        
+    public void ReloadVolume()
+    {
+        mixer.SetFloat("MasterVolume", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
+        mixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
+        mixer.SetFloat("SFXVolume", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
+    }
+
     public void StopMusic()
     {
         mainAudioSource.loop = false;
@@ -113,7 +104,9 @@ public class AudioControllerEditor : Editor
         if (GUILayout.Button("Play Next Music"))
         {
             audioController.PlayNext(nextClipToPlay);
-        }        if (GUILayout.Button("Reload Volume"))
+        }
+
+        if (GUILayout.Button("Reload Volume"))
         {
             audioController.ReloadVolume();
         }
