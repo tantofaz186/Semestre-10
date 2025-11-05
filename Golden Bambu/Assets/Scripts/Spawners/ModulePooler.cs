@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Spawners
 {
@@ -26,8 +28,10 @@ namespace Spawners
 
         private void Start()
         {
-            for (int i = 0; i < 3; i++)
+            var currentTime = DateTime.Now.Ticks;
+            while (pooledModules.Count < 8)
             {
+                if(DateTime.Now.Ticks - currentTime > 2) break;
                 foreach (var module in baseModules)
                 {
                     var mod = Instantiate(module);
