@@ -49,9 +49,9 @@ public class Sword : MonoBehaviour
         float distance = Vector3.Distance(swipeStartPosition, swipeEndPosition);
         if (deadzone < distance)
         {
-            Vector3 mainCameraPosition = mainCamera.transform.position;
-
             OnSwipeEnd?.Invoke(swipeStartPosition, swipeEndPosition);
+
+            Vector3 mainCameraPosition = mainCamera.transform.position;
             cuttingPlane.Set3Points(
                 swipeStartPosition,
                 swipeEndPosition,
@@ -64,7 +64,7 @@ public class Sword : MonoBehaviour
     private void SetupVfx(Vector3 swipeEndPosition, Vector3 mainCameraPosition, Vector3 planeNormal)
     {
         Vector3 midPoint = (swipeEndPosition + swipeStartPosition) / 2;
-        swordTrailVFX.transform.position = new(midPoint.x, player.transform.position.y, player.transform.position.z);
+        swordTrailVFX.transform.position = new(midPoint.x, mainCameraPosition.y, player.transform.position.z);
         swordTrailVFX.transform.LookAt(midPoint, planeNormal);
         swordTrailVFX.Play();
     }
