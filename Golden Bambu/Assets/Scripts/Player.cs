@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
@@ -16,7 +15,6 @@ public class Player : MonoBehaviour
         col = GetComponent<Collider>();
         anim = GetComponent<Animator>();
     }
-    //TODO Fazer o player mover baseado no corte HOOOOOOLY
     public void FixedUpdate()
     {
         if (rb.linearVelocity.magnitude < MAX_SPEED)
@@ -28,11 +26,25 @@ public class Player : MonoBehaviour
     public void Start()
     {
         Sword.Instance.OnCut += TriggerCutAnimation;
+        Sword.Instance.OnSwipeEnd += MoveLane;
+    }
+
+    private void MoveLane(Vector3 start, Vector3 end)
+    {
+        // Vector3 direction = (end - start).normalized;
+        // Vector3 right = transform.right;
+        // float dot = Vector3.Dot(direction, right);
+        // if (Mathf.Abs(dot) > 0.5f)
+        // {
+        //     Vector3 moveDirection = dot > 0 ? right : -right;
+        //     rb.AddForce(moveDirection * 10, ForceMode.VelocityChange);
+        // }
     }
 
     public void OnDestroy()
     {
         Sword.Instance.OnCut -= TriggerCutAnimation;
+        Sword.Instance.OnSwipeEnd -= MoveLane;
     }
 
     private void TriggerCutAnimation(Plane plane)
