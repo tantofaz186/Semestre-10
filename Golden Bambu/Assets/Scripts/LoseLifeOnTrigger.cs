@@ -4,7 +4,21 @@ public class LoseLifeOnTrigger : MonoBehaviour
 {
     [SerializeField]
     private uint life = 3;
+    public uint Life => life;
 
+    public static LoseLifeOnTrigger instance;
+    
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     public void OnTriggerEnter(Collider other)
     {
         LoseLife();
