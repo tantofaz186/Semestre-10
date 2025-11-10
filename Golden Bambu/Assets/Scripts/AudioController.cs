@@ -6,6 +6,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.Audio;
+using Random = UnityEngine.Random;
 
 public class AudioController : MonoBehaviour
 {
@@ -26,14 +27,41 @@ public class AudioController : MonoBehaviour
         Sword.Instance.OnCut += PlayCutSound;
         PlayMusic(mainMusicClips[0]);
         ReloadVolume();
+        StartCoroutine(NextMusicAtRandom());
+    }
+    private void OnDestroy()
+    {
+        Sword.Instance.OnCut -= PlayCutSound;
     }
 
+    int PickRandomTimeForNextMusic => Random.Range(3, 9) * 2;
+
+    private IEnumerator ChangeMusicAtRandom()
+    {
+        while (enabled)
+        {
+            yield return new WaitForSeconds(PickRandomTimeForNextMusic);
+            PlayNext(mainMusicClips[Random.Range(0, mainMusicClips.Count)]);
+            yield return null;
+        }
+    }
+    private int currentMusicIndex = 0;
+    private IEnumerator NextMusicAtRandom()
+    {
+        while (enabled)
+        {
+            yield return new WaitForSeconds(PickRandomTimeForNextMusic);
+            PlayNext(mainMusicClips[++currentMusicIndex % mainMusicClips.Count]);
+            yield return null;
+        }
+    }
     public void ReloadVolume()
     {
         mixer.SetFloat("MasterVolume", Mathf.Log10(PlayerPrefs.GetFloat("MasterVolume")) * 20);
         mixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
         mixer.SetFloat("SFXVolume", Mathf.Log10(PlayerPrefs.GetFloat("SFXVolume")) * 20);
     }
+
 
     public void StopMusic()
     {
