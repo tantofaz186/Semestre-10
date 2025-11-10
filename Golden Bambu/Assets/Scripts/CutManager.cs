@@ -9,20 +9,52 @@ public class CutManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            Destroy(Instance.gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        Instance = this;
     }
+
     public void CutObject(CuttableObject objToCut, Vector3 closestPoint, Vector3 normal)
     {
         StartCoroutine(Cut(objToCut, closestPoint, normal));
-        
+    }
+
+    public void CutAllObjects()
+    {
+        CuttableObject[] objs = FindObjectsByType<CuttableObject>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        foreach (CuttableObject obj in objs)
+        {
+            Transform objTransform = obj.transform;
+            Vector3 closestPoint = objTransform.position;
+            Vector3 normal = Vector3.up;
+            SimpleCut(obj, closestPoint, normal);            
+            normal = Vector3.right;
+            SimpleCut(obj, closestPoint, normal);
+            normal = Vector3.one;
+            SimpleCut(obj, closestPoint, normal);
+            normal = Vector3.zero;
+            SimpleCut(obj, closestPoint, normal);
+            // StartCoroutine(Cut(obj, closestPoint, normal));
+        }
+    }
+
+    private void SimpleCut(CuttableObject objToCut, Vector3 closestPoint, Vector3 normal)
+    {
+        var t = objToCut.transform;
+        Vector3 position = t.position;
+        Quaternion rotation = t.rotation;
+        Material mat = objToCut.mat;
+        GameObject o;
+        SlicedHull hull = (o = objToCut.gameObject).Slice(closestPoint, normal, mat);
+        if(hull == null) return;
+        GameObject upperHull = hull.CreateUpperHull(o);
+        GameObject lowerHull = hull.CreateLowerHull(objToCut.gameObject);
+        objToCut.Deactivate();
+        SetupHull(upperHull, position, rotation, mat);
+        SetupHull(lowerHull, position, rotation, mat);
     }
 
     private IEnumerator Cut(CuttableObject objToCut, Vector3 closestPoint, Vector3 normal)
@@ -40,16 +72,17 @@ public class CutManager : MonoBehaviour
         if (!upperHull.IsUnityNull())
         {
             yield return null;
-            SetupHull(upperHull, position,rotation,mat);
+            SetupHull(upperHull, position, rotation, mat);
             points++;
         }
 
         if (!lowerHull.IsUnityNull())
         {
             yield return null;
-            SetupHull(lowerHull, position,rotation,mat);
+            SetupHull(lowerHull, position, rotation, mat);
             points++;
         }
+
         yield return null;
     }
 
@@ -66,8 +99,9 @@ public class CutManager : MonoBehaviour
         hullRb.Sleep();
         hullRb.AddExplosionForce(
             100, position, 10);
-        Destroy(hull, 0.5f + Random.Range(0f,1f));
+        Destroy(hull, 0.5f + Random.Range(0f, 1f));
         boxCollider.isTrigger = true;
     }
+
     public uint points = 0;
 }
