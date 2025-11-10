@@ -10,7 +10,7 @@ public class PointsText : MonoBehaviour
         pointsText = GetComponent<TextMeshProUGUI>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         UpdateScore();
     }
