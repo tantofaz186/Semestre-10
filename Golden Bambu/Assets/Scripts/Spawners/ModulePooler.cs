@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -15,15 +14,11 @@ namespace Spawners
 
         private void Awake()
         {
-            if (Instance == null)
+            if (Instance != null)
             {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
+                Destroy(Instance.gameObject);
             }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Instance = this;
         }
 
         private void Start()
