@@ -1,13 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoseLifeOnTrigger : MonoBehaviour
 {
-    [SerializeField]
-    private uint life = 3;
+    [SerializeField] private uint life = 1;
     public uint Life => life;
 
     public static LoseLifeOnTrigger instance;
-    
+
     private void Awake()
     {
         if (instance == null)
@@ -19,6 +19,7 @@ public class LoseLifeOnTrigger : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     public void OnTriggerEnter(Collider other)
     {
         LoseLife();
@@ -33,10 +34,13 @@ public class LoseLifeOnTrigger : MonoBehaviour
     {
         life--;
         if (life <= 0) TriggerGameOver();
+        CutManager.Instance.CutAllObjects();
     }
 
     private void TriggerGameOver()
     {
-        Debug.Log("Game over");
+        PlayerPrefs.SetInt("FinalScore", (int)CutManager.Instance.points);
+        PlayerPrefs.SetInt("MaxScore", Mathf.Max(PlayerPrefs.GetInt("MaxScore"), (int)CutManager.Instance.points));
+        SceneManager.LoadScene("MenuScene");
     }
 }
