@@ -1,4 +1,6 @@
-﻿namespace Spawners
+﻿using System;
+
+namespace Spawners
 {
     using System.Collections.Generic;
     using UnityEngine;
@@ -10,12 +12,48 @@
     public class ModuleSpawner : MonoBehaviour
     {
         private Module lastModule;
-
+        private Queue<Module> spawnedModules = new Queue<Module>();
+        private byte startModulesToSpawn = 4;
         private void Start()
         {
-            SpawnFirstModule();
+            spawnedModules.Enqueue(SpawnFirstModule());
+            for (int i = 0; i < startModulesToSpawn; i++)
+            {
+                spawnedModules.Enqueue(SpawnModule());
+            }
+            Spawnpoint.OnPlayerPassed += SpawnpointEvent;
+        }
+
+        private void OnDestroy()
+        {
+            Spawnpoint.OnPlayerPassed -= SpawnpointEvent;
+        }
+
+        //since there are two spawn points passed per module, we return a module every two events
+        private bool spawnToggle = true;
+        private void SpawnpointEvent()
+        {
+            if (spawnToggle)
+            {
+                spawnedModules.Enqueue(SpawnModule());
+                HandleDespawn();
+            }
+            spawnToggle = !spawnToggle;
         }
         
+        // ensure that there is one module behind the player
+        private byte ignoreFirstTwoEventsForDespawning = 2;
+        private void HandleDespawn()
+        {
+            if (ignoreFirstTwoEventsForDespawning > 0)
+            {
+                ignoreFirstTwoEventsForDespawning--;
+            }
+            else
+            {
+                ModulePooler.Instance.ReturnModule(spawnedModules.Dequeue());
+            }
+        }
 
         public Module SpawnFirstModule()
         {
@@ -61,35 +99,7 @@
             lastUsedSpawnPoint = random;
             return module.spawnPoints[random];
         }
-
-        private List<Module> markedForDeletion = new List<Module>();
-        private int i = 0;
-
-        public void SpawnUntilTurn()
-        {
-            if (i++ % 2 == 0)
-            {
-                foreach (Module module in markedForDeletion)
-                {
-                    ModulePooler.Instance.ReturnModule(module);
-                }
-            }
-
-            if (lastModule == null)
-            {
-                SpawnFirstModule();
-            }
-
-            markedForDeletion.Add(lastModule);
-            int failsafe = 0;
-            do
-            {
-                markedForDeletion.Add(SpawnModule());
-                failsafe++;
-            } while (!(lastModule.gameObject.name.Contains("Turn") || lastModule.gameObject.name.Contains("Fork") || failsafe > 10));
-
-            markedForDeletion.Remove(lastModule);
-        }
+        
     }
     #if UNITY_EDITOR
     [CustomEditor(typeof(ModuleSpawner))]
@@ -113,11 +123,6 @@
             if (GUILayout.Button("Spawn Module"))
             {
                 _target.SpawnModule();
-            }
-
-            if (GUILayout.Button("Spawn Until Turn"))
-            {
-                _target.SpawnUntilTurn();
             }
         }
     }
