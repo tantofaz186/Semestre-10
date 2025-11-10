@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,7 +9,10 @@ public class UIManager : MonoBehaviour
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
     public GameObject settings;
-    public Button startGameButton;
+    public GameObject mainMenu;
+    public GameObject scorePanel;
+    public TextMeshProUGUI maxScoreTextValue;
+    public TextMeshProUGUI lastScoreTextValue;
     void Awake()
     {
         if (PlayerPrefs.HasKey("MasterVolume"))
@@ -27,12 +31,15 @@ public class UIManager : MonoBehaviour
 
     private void SetupUI()
     {
-        startGameButton.gameObject.SetActive(true);
+        scorePanel.SetActive(PlayerPrefs.HasKey("MaxScore"));
+        maxScoreTextValue.text = $"{PlayerPrefs.GetInt("MaxScore", 0): 00000}";
+        lastScoreTextValue.text = $"{PlayerPrefs.GetInt("FinalScore", 0): 00000}";
+        mainMenu.SetActive(true);
         settings.SetActive(false);
     }
     public void ToggleSettings()
     {
-        startGameButton.gameObject.SetActive(settings.activeSelf);
+        mainMenu.SetActive(settings.activeSelf);
         settings.SetActive(!settings.activeSelf);
     }
     public void StartGame()
