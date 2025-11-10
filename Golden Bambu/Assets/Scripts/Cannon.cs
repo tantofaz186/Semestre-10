@@ -13,13 +13,16 @@ public class Cannon : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < objectsToSpawn.Count; i++)
-        {
-            CuttableObject obj = Instantiate(objectsToSpawn[i]);
-            spawnedObjects.Add(obj);
-            spawnedObjects[i].Deactivate();
-        }
-        AudioController.OnMusicStart += SpawnNextMusic;
+        for(int j = 0; j < 2; j++)
+            for (int i = 0; i < objectsToSpawn.Count; i++)
+            {
+                CuttableObject obj = Instantiate(objectsToSpawn[i]);
+                spawnedObjects.Add(obj);
+                spawnedObjects[i].Deactivate();
+                objectsToSpawn[i].Deactivate();
+            }
+            
+            AudioController.OnMusicStart += SpawnNextMusic;
     }
 
     private void OnDestroy()
