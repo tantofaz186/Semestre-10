@@ -10,6 +10,7 @@ public class LoseLifeOnTrigger : MonoBehaviour
 
     private void Awake()
     {
+        life = 999;
         if (instance == null)
         {
             instance = this;
