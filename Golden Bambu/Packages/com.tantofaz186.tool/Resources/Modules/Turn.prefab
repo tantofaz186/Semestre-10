@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4279847119916534075}
   - component: {fileID: 214648959225254036}
   - component: {fileID: -9021581885764784869}
-  - component: {fileID: 7151493996272283648}
+  - component: {fileID: 8842543004367741797}
   m_Layer: 7
   m_Name: Turn
   m_TagString: Untagged
@@ -142,7 +142,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.201351, y: 0.06561446, z: 6.201353}
   m_Center: {x: -0.805315, y: -0.715973, z: 0.8055682}
---- !u!114 &7151493996272283648
+--- !u!114 &8842543004367741797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,12 +151,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4012675193560427491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4902196e12182a409a8f950dc02c43a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0803ac727a137511ebf58fee583a99e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints:
   - {fileID: 1849626098655577840}
   - {fileID: 3200975783512778825}
+  occupied: 0000
 --- !u!1 &7089139939391154131
 GameObject:
   m_ObjectHideFlags: 0

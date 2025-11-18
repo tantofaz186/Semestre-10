@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 7912609513872851180}
   - component: {fileID: 5785296864248420745}
   - component: {fileID: 5894402702340391540}
-  - component: {fileID: -565610916296261720}
+  - component: {fileID: 5464553260777947237}
   m_Layer: 7
   m_Name: Intersection
   m_TagString: Untagged
@@ -465,7 +465,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.863793, y: 3, z: 3.863793}
   m_Center: {x: 4.068112, y: 0.73683214, z: -4.059565}
---- !u!114 &-565610916296261720
+--- !u!114 &5464553260777947237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -474,7 +474,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5675171231450989950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4902196e12182a409a8f950dc02c43a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0803ac727a137511ebf58fee583a99e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints:
@@ -482,3 +482,4 @@ MonoBehaviour:
   - {fileID: 7123744302139184002}
   - {fileID: 2697436217558810010}
   - {fileID: 6692743699418480795}
+  occupied: 00000000

@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3166279211119532606}
   - component: {fileID: 1788446704492177209}
   - component: {fileID: 1431430318943953338}
-  - component: {fileID: -4577123268509767314}
+  - component: {fileID: -4894952516085886223}
   m_Layer: 7
   m_Name: Alley
   m_TagString: Untagged
@@ -141,7 +141,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.999998, y: 0.053601503, z: 4.2190094}
   m_Center: {x: -0.100626945, y: -1.6591002, z: 0.56140137}
---- !u!114 &-4577123268509767314
+--- !u!114 &-4894952516085886223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,8 +150,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7613660668395004737}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4902196e12182a409a8f950dc02c43a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0803ac727a137511ebf58fee583a99e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints:
   - {fileID: 6152439004956728049}
+  occupied: 00

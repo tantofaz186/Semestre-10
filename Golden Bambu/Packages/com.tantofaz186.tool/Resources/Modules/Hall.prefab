@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8402439207225472955}
   - component: {fileID: 4892935448369751264}
   - component: {fileID: 6132135678312420409}
-  - component: {fileID: 3182801163077150691}
+  - component: {fileID: -1662137123925952030}
   m_Layer: 7
   m_Name: Hall
   m_TagString: Untagged
@@ -155,7 +155,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.15663505, y: 3, z: 8.000002}
   m_Center: {x: -2.2470818, y: 0.8767891, z: 0}
---- !u!114 &3182801163077150691
+--- !u!114 &-1662137123925952030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,12 +164,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 917215563086259157}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4902196e12182a409a8f950dc02c43a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0803ac727a137511ebf58fee583a99e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints:
   - {fileID: 1705406295434025717}
   - {fileID: 1506801467515201457}
+  occupied: 0000
 --- !u!1 &3179385936682228603
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6086071436692408845}
   - component: {fileID: 7309743548998530550}
   - component: {fileID: -5386915943863417099}
-  - component: {fileID: -8577470488701568296}
+  - component: {fileID: 4006196517046541010}
   m_Layer: 7
   m_Name: Fork
   m_TagString: Untagged
@@ -112,7 +112,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 0.08339524, z: 12}
   m_Center: {x: -1.3661957, y: -0.97033966, z: 0.04389572}
---- !u!114 &-8577470488701568296
+--- !u!114 &4006196517046541010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,13 +121,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 758693541488887047}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4902196e12182a409a8f950dc02c43a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0803ac727a137511ebf58fee583a99e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints:
   - {fileID: 1763590309607253449}
   - {fileID: 8494961401051601637}
   - {fileID: 4650835463726330520}
+  occupied: 000000
 --- !u!1 &3437586804222322326
 GameObject:
   m_ObjectHideFlags: 0

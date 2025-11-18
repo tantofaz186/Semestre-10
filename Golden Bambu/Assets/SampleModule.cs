@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Module : MonoBehaviour
+public class SampleModule : MonoBehaviour
 {
     public Transform[] spawnPoints;
     public bool[] occupied;
