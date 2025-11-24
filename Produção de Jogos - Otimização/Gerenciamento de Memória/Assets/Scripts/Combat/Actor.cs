@@ -11,12 +11,12 @@ namespace Combat
         public void TakeDamage(int damage)
         {
             damage -= stats.defense;
-            stats.health = Mathf.Max(stats.health - Mathf.Min(damage, 0), 0);
+            stats.health = Mathf.Max(stats.health - Mathf.Min(damage, 1), 0);
         }
 
         public void Heal(int amount)
         {
-            stats.health += amount;
+            stats.health = Mathf.Min(stats.health + amount, stats.maxHealth);
         }
         
         public void Attack(Actor target)

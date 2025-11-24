@@ -4,11 +4,18 @@ namespace Combat
 {
     public class CombatScene
     {
-        List<Actor> actors;
+        public readonly List<Actor> players;
+        public readonly List<Actor> enemies;
+        public readonly List<Actor> actors;
         
-        public CombatScene(List<Actor> actors)
+        public CombatScene(List<Actor> players, List<Actor> enemies)
         {
-            this.actors = actors;
+            this.players = players;
+            this.enemies = enemies;
+            actors = new List<Actor>(players.Count + enemies.Count);
+            actors.AddRange(players);
+            actors.AddRange(enemies);
+            actors.Sort((a, b) => b.stats.speed.CompareTo(a.stats.speed));
         }
     }
 }
