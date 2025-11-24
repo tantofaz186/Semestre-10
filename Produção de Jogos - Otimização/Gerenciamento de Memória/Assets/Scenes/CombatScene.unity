@@ -1767,6 +1767,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c1cedc8ce70374baf78c7d81163f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorUIPrefab: {fileID: 0}
+  playerUIGrid: {fileID: 0}
+  enemyUIGrid: {fileID: 0}
 --- !u!4 &568248463
 Transform:
   m_ObjectHideFlags: 0
