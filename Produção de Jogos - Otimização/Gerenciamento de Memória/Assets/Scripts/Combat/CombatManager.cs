@@ -5,7 +5,8 @@ namespace Combat
 {
     public class CombatManager : MonoBehaviour
     {
-        public ActorUI actorUIPrefab;
+        public ActorUI PlayerUIPrefab;
+        public ActorUI EnemyUIPrefbab;
         public GridLayoutGroup playerUIGrid;
         public GridLayoutGroup enemyUIGrid;
         private int turn;
@@ -14,13 +15,13 @@ namespace Combat
             turn = 0;
             foreach (var actor in scene.players)
             {
-                var uiObj = Instantiate(actorUIPrefab, playerUIGrid.transform);
+                var uiObj = Instantiate(PlayerUIPrefab, playerUIGrid.transform);
 
                 uiObj.Setup(actor);
             }
             foreach (var actor in scene.enemies)
             {
-                var uiObj = Instantiate(actorUIPrefab, enemyUIGrid.transform);
+                var uiObj = Instantiate(EnemyUIPrefbab, enemyUIGrid.transform);
                 uiObj.Setup(actor);
             }
         }

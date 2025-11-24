@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Combat
 {
+    [CreateAssetMenu(fileName = "Actor", menuName = "Combat/Actor")]
     public class Actor : ScriptableObject
     {
         public string actorName;
