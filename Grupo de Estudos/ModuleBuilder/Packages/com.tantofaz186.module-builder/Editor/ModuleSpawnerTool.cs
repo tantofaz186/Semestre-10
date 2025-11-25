@@ -1,4 +1,4 @@
-namespace Packages.com.tantofaz186.tool.Editor
+namespace Packages.com.tantofaz186.ModuleSpawner.Editor
 {
     using UnityEngine;
     using UnityEditor;
