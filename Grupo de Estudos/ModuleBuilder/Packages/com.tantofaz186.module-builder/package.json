@@ -1,10 +1,11 @@
 {
   "name": "com.tantofaz186.tool",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "displayName": "Module Builder",
   "unity": "6000.0",
   "author": {
     "name": "Tom\u00e1s Pedron",
     "email": "tomasturchi98@gmail.com"
-  }
+  },
+  "description": "Build a level with modules. \nClick the blue square on one of the exits of the module and choose what you want to come next.\nYou can make new modules. Just create spawn positions on the exits and you can build your level with it."
 }
