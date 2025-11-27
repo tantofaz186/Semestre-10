@@ -485,8 +485,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c1cedc8ce70374baf78c7d81163f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerUIPrefab: {fileID: 2804279284012128990, guid: caf548cf844f02c97aa6d4f4f5dec324, type: 3}
-  EnemyUIPrefbab: {fileID: 280110929769444531, guid: a42dca1250c9b0f698cfd5f080cfd96d, type: 3}
+  PlayerUIPrefab:
+    m_AssetGUID: caf548cf844f02c97aa6d4f4f5dec324
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  EnemyUIPrefbab:
+    m_AssetGUID: a42dca1250c9b0f698cfd5f080cfd96d
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   playerUIGrid: {fileID: 1161989528}
   enemyUIGrid: {fileID: 287962230}
 --- !u!4 &568248463
