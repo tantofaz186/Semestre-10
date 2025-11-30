@@ -14,22 +14,24 @@ public class ButtonBehaviourEditor : Editor
     MonoBehaviour targetBehaviour;
     MethodInfo[] methods;
     List<List<System.Object>> parameters = new List<List<object>>();
+
     private static readonly Dictionary<Type, Func<string, object, object>> drawers =
         new Dictionary<Type, Func<string, object, object>>
         {
-            { typeof(int),        (name, value) => EditorGUILayout.IntField(name, (int)value) },
-            { typeof(float),      (name, value) => EditorGUILayout.FloatField(name, (float)value) },
-            { typeof(long),       (name, value) => EditorGUILayout.LongField(name, (long)value) },
-            { typeof(bool),       (name, value) => EditorGUILayout.Toggle(name, (bool)value) },
-            { typeof(Vector2),    (name, value) => EditorGUILayout.Vector2Field(name, (Vector2)value) },
-            { typeof(Vector3),    (name, value) => EditorGUILayout.Vector3Field(name, (Vector3)value) },
-            { typeof(Vector4),    (name, value) => EditorGUILayout.Vector4Field(name, (Vector4)value) },
+            { typeof(int), (name, value) => EditorGUILayout.IntField(name, (int)value) },
+            { typeof(float), (name, value) => EditorGUILayout.FloatField(name, (float)value) },
+            { typeof(long), (name, value) => EditorGUILayout.LongField(name, (long)value) },
+            { typeof(bool), (name, value) => EditorGUILayout.Toggle(name, (bool)value) },
+            { typeof(Vector2), (name, value) => EditorGUILayout.Vector2Field(name, (Vector2)value) },
+            { typeof(Vector3), (name, value) => EditorGUILayout.Vector3Field(name, (Vector3)value) },
+            { typeof(Vector4), (name, value) => EditorGUILayout.Vector4Field(name, (Vector4)value) },
             { typeof(Vector2Int), (name, value) => EditorGUILayout.Vector2IntField(name, (Vector2Int)value) },
             { typeof(Vector3Int), (name, value) => EditorGUILayout.Vector3IntField(name, (Vector3Int)value) },
-            { typeof(Color),      (name, value) => EditorGUILayout.ColorField(name, (Color)value) },
-            { typeof(Rect),       (name, value) => EditorGUILayout.RectField(name, (Rect)value) },
-            { typeof(Bounds),     (name, value) => EditorGUILayout.BoundsField(name, (Bounds)value) },
+            { typeof(Color), (name, value) => EditorGUILayout.ColorField(name, (Color)value) },
+            { typeof(Rect), (name, value) => EditorGUILayout.RectField(name, (Rect)value) },
+            { typeof(Bounds), (name, value) => EditorGUILayout.BoundsField(name, (Bounds)value) },
         };
+
     private void OnEnable()
     {
         targetBehaviour = (MonoBehaviour)target;
@@ -47,9 +49,12 @@ public class ButtonBehaviourEditor : Editor
                 parameters[i].Add(new System.Object());
             }
         }
+
         foldouts = new bool[methods.Length];
     }
+
     bool[] foldouts;
+
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -67,18 +72,20 @@ public class ButtonBehaviourEditor : Editor
             var parametersInfo = method.GetParameters();
             if (parametersInfo.Length > 0)
             {
-                foldouts[i] = EditorGUILayout.Foldout (foldouts[i], "Parameters");
+                foldouts[i] = EditorGUILayout.Foldout(foldouts[i], "Parameters");
                 if (foldouts[i])
                 {
                     for (int j = 0; j < parametersInfo.Length; j++)
                     {
+                        String parameterName = parametersInfo[j].Name;
+                        Type parameterType = parametersInfo[j].ParameterType;
                         var holder = parameters[i][j];
-                        DrawFields(parametersInfo[j], ref holder);
+                        DrawFields(parameterName, parameterType, ref holder);
                         parameters[i][j] = holder;
                     }
                 }
             }
-            
+
 
             if (b)
             {
@@ -87,28 +94,28 @@ public class ButtonBehaviourEditor : Editor
         }
     }
 
-    private void DrawFields(ParameterInfo parameterInfo, ref System.Object obj)
+    private void DrawFields(String parameterName, Type parameterType, ref System.Object obj)
     {
-        if (parameterInfo.ParameterType.IsValueType)
+        if (parameterType.IsValueType)
         {
-            DealWithValueType(parameterInfo, ref obj);
+            DealWithValueType(parameterName, parameterType, ref obj);
         }
-        else if (parameterInfo.ParameterType == typeof(string))
+        else if (parameterType == typeof(string))
         {
-            DealWithString(parameterInfo, ref obj);
+            DealWithString(parameterName, parameterType, ref obj);
         }
-        else if (typeof(IEnumerable).IsAssignableFrom(parameterInfo.ParameterType))
+        else if (typeof(IEnumerable).IsAssignableFrom(parameterType))
         {
-            DealWithArray(parameterInfo, ref obj);
+            DealWithArray(parameterName, parameterType, ref obj);
         }
         else
         {
-            if (obj != null && obj.GetType() != parameterInfo.ParameterType)
+            if (obj != null && obj.GetType() != parameterType)
             {
                 obj = null;
             }
-            
-            obj = EditorGUILayout.ObjectField(parameterInfo.Name, (Object)obj, parameterInfo.ParameterType, true);
+
+            obj = EditorGUILayout.ObjectField(parameterName, (Object)obj, parameterType, true);
         }
         // else
         // {
@@ -116,13 +123,56 @@ public class ButtonBehaviourEditor : Editor
         // }
     }
 
-    private void DealWithArray(ParameterInfo parameterInfo, ref System.Object obj)
+    private void DealWithArray(String parameterName, Type parameterType, ref System.Object obj)
     {
         EditorGUILayout.BeginHorizontal();
-        Type paramType = parameterInfo.ParameterType.GetElementType();
-        if (typeof(IEnumerable).IsAssignableFrom(paramType))
+
+        Type elementType = parameterType.GetElementType() ?? parameterType.GetGenericArguments().Single();
+        Debug.Log(elementType.Name);
+        if (obj == null || obj.GetType() != parameterType)
         {
-            
+            obj = Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType));
+        }
+        
+        IList array = (IList)obj;
+
+        int newSize = EditorGUILayout.IntField(parameterName + " Size", array.Count);
+        if (newSize != array.Count)
+        {
+            while (newSize > array.Count)
+            {
+                array.Add(null);
+            }
+
+            while (newSize < array.Count)
+            {
+                array.RemoveAt(array.Count - 1);
+            }
+        }
+        System.Object element;
+        try{element = Activator.CreateInstance(elementType);} 
+        catch{element = new object();}
+        // if (typeof(IEnumerable).IsAssignableFrom(paramType))
+        // {
+        //     System.Object subList;
+        //     DealWithArray(parameterName + " Element", paramType, ref subList);
+        //     ((List<System.Object>)obj).Add(subList);
+        // }
+        
+        if (elementType == typeof(string))
+        {
+            DealWithString(parameterName + " Element", elementType, ref element);
+            ((IList)obj).Add(element);
+        }
+        else if (elementType.IsValueType)
+        {
+            DealWithValueType(parameterName + " Element", elementType, ref element);
+            ((IList)obj).Add(element);
+        }
+        else
+        {
+            element = EditorGUILayout.ObjectField(parameterName + " Element", (Object)element, elementType, true);
+            ((IList)obj).Add(element);
         }
         // Type elementType = parameterInfo.ParameterType.GetElementType();
         // if (obj == null || obj.GetType() != parameterInfo.ParameterType)
@@ -189,38 +239,37 @@ public class ButtonBehaviourEditor : Editor
         EditorGUILayout.EndHorizontal();
     }
 
-    private void DealWithString(ParameterInfo parameterInfo, ref System.Object obj)
+    private void DealWithString(String parameterName, Type parameterType, ref System.Object obj)
     {
         if (obj.GetType() != typeof(string))
         {
             obj = "";
         }
 
-        obj = EditorGUILayout.TextField(parameterInfo.Name, (string)obj);
+        obj = EditorGUILayout.TextField(parameterName, (string)obj);
     }
 
-    private void DealWithValueType(ParameterInfo parameterInfo, ref System.Object obj)
+    private void DealWithValueType(String parameterName, Type parameterType, ref System.Object obj)
     {
-        if (obj.GetType() != parameterInfo.ParameterType)
-            obj = Activator.CreateInstance(parameterInfo.ParameterType);
-        
-        if (drawers.TryGetValue(parameterInfo.ParameterType, out var drawer))
+        if (obj.GetType() != parameterType) obj = Activator.CreateInstance(parameterType);
+
+        if (drawers.TryGetValue(parameterType, out var drawer))
         {
-            obj = drawer(parameterInfo.Name, obj);
+            obj = drawer(parameterName, obj);
         }
-        else if (parameterInfo.ParameterType.IsEnum)
+        else if (parameterType.IsEnum)
         {
-            obj = EditorGUILayout.EnumPopup(parameterInfo.Name, (Enum)obj);
+            obj = EditorGUILayout.EnumPopup(parameterName, (Enum)obj);
         }
         else
         {
-
-            Debug.LogWarning($"Unsupported parameter type: {parameterInfo.ParameterType}");
-            if (obj != null && obj.GetType() != parameterInfo.ParameterType)
+            Debug.LogWarning($"Unsupported parameter type: {parameterType}");
+            if (obj != null && obj.GetType() != parameterType)
             {
                 obj = null;
             }
-            obj = EditorGUILayout.ObjectField(parameterInfo.Name, (Object)obj, parameterInfo.ParameterType, true);
+
+            obj = EditorGUILayout.ObjectField(parameterName, (Object)obj, parameterType, true);
         }
     }
 }
