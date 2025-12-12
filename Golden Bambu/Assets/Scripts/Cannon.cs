@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.VFX;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,19 +11,27 @@ public class Cannon : MonoBehaviour
     int next = 0;
     public List<Transform> shootPoint;
     private List<CuttableObject> spawnedObjects = new List<CuttableObject>();
+    [SerializeField] private VisualEffect portalEffect;
+    [SerializeField] private List<VisualEffect> portalEffectList;
 
     private void Start()
     {
-        for(int j = 0; j < 2; j++)
-            for (int i = 0; i < objectsToSpawn.Count; i++)
-            {
-                CuttableObject obj = Instantiate(objectsToSpawn[i]);
-                spawnedObjects.Add(obj);
-                spawnedObjects[i].Deactivate();
-                objectsToSpawn[i].Deactivate();
-            }
-            
-            AudioController.OnMusicStart += SpawnNextMusic;
+        for (int j = 0; j < 2; j++)
+        for (int i = 0; i < objectsToSpawn.Count; i++)
+        {
+            CuttableObject obj = Instantiate(objectsToSpawn[i]);
+            spawnedObjects.Add(obj);
+            spawnedObjects[i].Deactivate();
+            objectsToSpawn[i].Deactivate();
+        }
+
+        for (int i = 0; i < spawnedObjects.Count; i++)
+        {
+            var portal = Instantiate(portalEffect, portalEffect.transform.position, portalEffect.transform.rotation);
+            portalEffectList.Add(portal);
+        }
+
+        AudioController.OnMusicStart += SpawnNextMusic;
     }
 
     private void OnDestroy()
@@ -32,11 +41,16 @@ public class Cannon : MonoBehaviour
 
     public Vector3 force;
     public float torque;
+
     public void SpawnNext()
     {
         var nextObject = spawnedObjects[next];
         nextObject.Reset();
-        nextObject.transform.position = shootPoint[Random.Range(0, shootPoint.Count)].position;
+        var nextEffect = portalEffectList[next];
+        var pointPosition = shootPoint[Random.Range(0, shootPoint.Count)].position;
+        nextObject.transform.position = pointPosition;
+        nextEffect.transform.position = pointPosition;
+        nextEffect.Play();
 
 
         nextObject.rb.Sleep();
@@ -55,12 +69,12 @@ public class Cannon : MonoBehaviour
         CancelInvoke();
         isSpawning = false;
     }
+
     public void SpawnNextPerSecond()
     {
         if (isSpawning) return;
         isSpawning = true;
         InvokeRepeating(nameof(SpawnNext), 0, 1f);
-
     }
 
     public void SpawnNextMusic(AudioClipWithTempo clipWithTempo)
@@ -73,7 +87,7 @@ public class Cannon : MonoBehaviour
         }
     }
     #if UNITY_EDITOR
-[CustomEditor(typeof(Cannon))]
+    [CustomEditor(typeof(Cannon))]
     public class Cannon_Inspector : Editor
     {
         public override void OnInspectorGUI()
